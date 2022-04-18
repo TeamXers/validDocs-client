@@ -79,16 +79,21 @@ const Home = () => {
 
                             <Box component={"span"} > Connect your wallet to begin</Box>
                         </Typography>
-                      <Box sx={{display:"flex"}} >
+                      <Box sx={{display:"flex", flexDirection:{xs:"column", md:"row"}}} >
                             {
                             !account ?
                                 (<Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={handleConnect}>Connect Wallet</Button>)
                                 :
                                 (<>
                                 <Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={() => navigate("/account/documents/new")}>Create Document</Button>
-                                        <Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>
+                                        
                                 </>
                                 )
+                        }
+                        {
+                            account ? 
+                                    (<Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: {xs:"0 1rem" ,md:"1rem 0"}, borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>)
+                                    : ""
                         }
                         </Box>
                     </Box>
