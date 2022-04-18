@@ -9,28 +9,31 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { useSnackbar } from 'notistack';
 import { useEthers } from '@usedapp/core';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from "react-query";
 import { useAppState } from '../context/Provider';
 import { GET_ACCOUNT } from "../api/validdocs";
+import { utils } from "ethers"
+import { Testnet } from '../ChainConfig';
 
 
 const Header = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { state, updateState } = useAppState();
+    const navigate = useNavigate();
     const [menuAnchor, setMenuAnchor] = useState<any>(null);
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
-    const { activateBrowserWallet, account, active, deactivate, error } = useEthers();
+    const { activateBrowserWallet, account, active, deactivate, error, library, switchNetwork } = useEthers();
     const location = useLocation()
-    
+
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-    
+
 
     useQuery(['account', account], GET_ACCOUNT as any, {
         enabled: Boolean(account),
@@ -54,13 +57,38 @@ const Header = () => {
 
     useEffect(() => {
         if (error) {
-           
+
             enqueueSnackbar(error.message, { variant: 'error' });
         }
     }, [error]);
 
     const handleConnect = async () => {
-        activateBrowserWallet()
+        // setActivateError("")
+        await activateBrowserWallet()
+        // console.log(Testnet.chainId)
+        // if(Testnet.chainId !== chainId )  { 
+        try {
+            await switchNetwork(Testnet.chainId)
+        }
+        catch (e: any) {
+            if (e.code === 4902) {
+                try {
+                    await library ?.send("wallet_addEthereumChain", [{
+                        chainId: utils.hexlify(1666700000),
+                        chainName: 'Harmony Testnet Shard 0',
+                        nativeCurrency: { name: "Harmony Testnet", symbol: "ONE", decimals: 18 },
+                        rpcUrls: ["https://api.s0.b.hmny.io"],
+                        blockExplorerUrls: ["https://explorer.pops.one/"],
+
+                    }])
+                }
+                catch (e: any) {
+                    console.log(e.message)
+                }
+            }
+        }
+        navigate("/account/documents")
+        // }
     }
 
     return (
@@ -76,40 +104,40 @@ const Header = () => {
                                 mr: 2, display: { xs: 'flex' },
                                 fontFamily: '"Roboto", sans-serif',
                                 color: 'inherit', textDecoration: 'none',
-                                overflow:"visible"
+                                overflow: "visible"
                             }}
                         >
                             VALIDDOCS
                         </Typography>
                         <Box
-                        sx={{display: { xs: 'none', sm: 'flex' }, justifyContent:"flex-end", alignItems:"center",width:"100%"}}
+                            sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: "flex-end", alignItems: "center", width: "100%" }}
                         >
 
 
-                        {
-    
-    location.pathname !== "/" ? (
-<Button color='inherit'>
-                        <Link component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit' }}>
-                            Home
+                            {
+
+                                location.pathname !== "/" ? (
+                                    <Button color='inherit'>
+                                        <Link component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit' }}>
+                                            Home
                                         </Link></Button>
-) : ""}
-                        {
-                            account
-                                ? <Button color='inherit'
-                                startIcon={<AccountCircleIcon />}
-                                    onClick={(e) => setMenuAnchor(e.currentTarget)}
-                                    sx={{ textTransform: "none" }} >
-                                    Account
+                                ) : ""}
+                            {
+                                account
+                                    ? <Button color='inherit'
+                                        startIcon={<AccountCircleIcon />}
+                                        onClick={(e) => setMenuAnchor(e.currentTarget)}
+                                        sx={{ textTransform: "none" }} >
+                                        Account
                                 </Button>
-                                : <Button startIcon={<AccountBalanceWalletIcon />}
-                                    onClick={handleConnect}
-                                    color="inherit" sx={{ textTransform: "none" }} >
-                                    Connect
+                                    : <Button startIcon={<AccountBalanceWalletIcon />}
+                                        onClick={handleConnect}
+                                        color="inherit" sx={{ textTransform: "none" }} >
+                                        Connect
                                 </Button>
-                        }
-</Box>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' }, justifyContent:"flex-end", width:"100%", position:"absolute", left:0 }}>
+                            }
+                        </Box>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' }, justifyContent: "flex-end", width: "100%", position: "absolute", left: 0 }}>
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
@@ -135,22 +163,22 @@ const Header = () => {
                                 open={Boolean(anchorElNav)}
                                 onClose={handleCloseNavMenu}
                                 sx={{
-                                    display: { xs: 'block', md: 'none' }, transform:`translate(${anchorElNav ? "0px , 0px" : "100vw, 0"})`, transition:"transition 0.4s"
+                                    display: { xs: 'block', md: 'none' }, transform: `translate(${anchorElNav ? "0px , 0px" : "100vw, 0"})`, transition: "transition 0.4s"
                                 }}
                             >
                                 {
 
                                     location.pathname !== "/" ? (
-                                         <MenuItem sx={{width:"100vw"}}>
-                               
-<Button color='inherit'>
-                        <Link component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit', textDecoration:"none", textTransform:"none", display:"flex", justifyContent:"center" }}>
-                            Home
+                                        <MenuItem sx={{ width: "100vw" }}>
+
+                                            <Button color='inherit'>
+                                                <Link component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit', textDecoration: "none", textTransform: "none", display: "flex", justifyContent: "center" }}>
+                                                    Home
                                         </Link></Button>
 
-                                </MenuItem>) : ""
-}
-                                <MenuItem sx={{ width: "100vw", display: "flex"}} >
+                                        </MenuItem>) : ""
+                                }
+                                <MenuItem sx={{ width: "100vw", display: "flex" }} >
                                     {
                                         account
                                             ? <Button color='inherit'
@@ -160,7 +188,7 @@ const Header = () => {
                                                 Account
                                             </Button>
                                             : <Button
-                                             startIcon={<AccountBalanceWalletIcon color="primary" />}
+                                                startIcon={<AccountBalanceWalletIcon color="primary" />}
                                                 onClick={handleConnect}
                                                 color="inherit" sx={{ textTransform: "none" }} >
                                                 Connect
@@ -175,7 +203,7 @@ const Header = () => {
                 <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)}
                     onClose={() => setMenuAnchor(null)}
                 >
-                    <MenuItem disabled>{state.account?.username || 'No username'}</MenuItem>
+                    <MenuItem disabled>{state.account ?.username || 'No username'}</MenuItem>
                     <Divider />
                     <MenuItem component={RouterLink} to='/account/documents'>Your Documents</MenuItem>
                     <MenuItem component={RouterLink} to='/account/profile'>Your Profile</MenuItem>
@@ -183,9 +211,10 @@ const Header = () => {
                     <MenuItem onClick={() => {
                         deactivate();
                         setMenuAnchor(null);
+                        navigate("/")
                     }}>Disconnect</MenuItem>
                 </Menu>
-               
+
             </AppBar>
         </>
     )

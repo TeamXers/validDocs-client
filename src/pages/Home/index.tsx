@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom"
 const Home = () => {
     const [activateError, setActivateError] = useState('')
     const navigate = useNavigate()
-    const { activateBrowserWallet, error, active, chainId, library, switchNetwork } = useEthers()
+    const { activateBrowserWallet, account, chainId, library, switchNetwork } = useEthers()
     // useEffect(() => {
 
     //     if (error) {
@@ -38,15 +38,14 @@ const Home = () => {
         catch (e: any) {
             if (e.code === 4902) {
                 try {
-                    await library?.send("wallet_addEthereumChain", [{
+                    await library ?.send("wallet_addEthereumChain", [{
                         chainId: utils.hexlify(1666700000),
                         chainName: 'Harmony Testnet Shard 0',
                         nativeCurrency: { name: "Harmony Testnet", symbol: "ONE", decimals: 18 },
                         rpcUrls: ["https://api.s0.b.hmny.io"],
                         blockExplorerUrls: ["https://explorer.pops.one/"],
 
-                    }])
-                }
+                    }])}
                 catch (e: any) {
                     console.log(e.message)
                 }
@@ -71,7 +70,7 @@ const Home = () => {
 
                         >
                             Protect the Authenticity and Integrity of Your Documents
-                        </Typography>
+        </Typography>
                         <Typography
                             variant={"h6"}
                             sx={{ color: "#707070", padding: { xs: "0", md: "0 2rem 0 0" }, margin: "2rem 0", fontWeight: "300" }}
@@ -80,8 +79,18 @@ const Home = () => {
 
                             <Box component={"span"} > Connect your wallet to begin</Box>
                         </Typography>
-                        <Button /* startIcon={<Box component ="img" src={MetaMaskIcon} alt="icon"  sx={{width:"25px", height:"25px"}} />} */ variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={handleConnect}>Connect Wallet</Button>
-
+                      <Box sx={{display:"flex"}} >
+                            {
+                            !account ?
+                                (<Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={handleConnect}>Connect Wallet</Button>)
+                                :
+                                (<>
+                                <Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={() => navigate("/account/documents/new")}>Create Document</Button>
+                                        <Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>
+                                </>
+                                )
+                        }
+                        </Box>
                     </Box>
                     <Box
                         sx={{ width: { xs: "100%", md: "50%" }, position: "relative", margin: { xs: "2rem 0 0 0", md: "0" } }}
@@ -105,10 +114,10 @@ const Home = () => {
                                 fontWeight: "600", color: "#fff", fontSize: "32px !important", lineHeight: "32.5px", margin: "0 0 2rem 0", textAlign: { xs: "center", md: "left" }
                             }}>
                                 Looking for something?
-                            </Typography>
+            </Typography>
                             <Typography sx={{ color: "#fff" }}>
                                 search for documents using unique reference ID
-                            </Typography>
+                </Typography>
 
                             <Input type="search" name="search" placeholder="Enter reference ID" sx={{ display: "flex", width: { xs: "90%", sm: "90%" }, padding: ".5rem 1rem", backgroundColor: "#fff", borderRadius: "10px", margin: { xs: "2rem auto", md: "2rem 0" } }} endAdornment={<InputAdornment position="end"> <SearchIcon /> </InputAdornment>} />
                             <Button variant="contained" sx={{ display: { xs: "flex", md: "inline-flex" }, margin: { xs: "0 auto", md: "0" }, backgroundColor: "rgb(0, 191, 173)", borderRadius: "10px", padding: ".7rem 2rem" }}>Search</Button>
@@ -139,10 +148,10 @@ const Home = () => {
                                 sx={{ textAlign: "center", color: "#009688" }}
                             >
                                 Secure
-                            </Typography>
+    </Typography>
                             <Typography sx={{ color: "#707070", padding: { xs: "0", md: "0" }, margin: "2rem 0", fontWeight: "300", textAlign: "center" }}>
                                 Your files are very safe from security threats due to the combination of the blockchain and IPFS file system
-                            </Typography>
+</Typography>
                         </Grid>
                         <Grid item xs={12} md={4} sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                             <Box
