@@ -43,7 +43,9 @@ export const CreateDocument = () => {
         if (!status.receipt) return;
         let tokenId = (status.receipt as any).events[0].args.tokenId;
         tokenId = Number.parseInt(tokenId);
-        await POST_DOCUMENT({ ...pendingDoc, tokenId })
+        await POST_DOCUMENT({
+            ...pendingDoc, tokenId, tranxHash: status.transaction?.hash
+        });
         navigate(`/account/documents/${tokenId}`);
     });
 

@@ -63,7 +63,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
 
     const document = data[0];
     const shareableUrl = `${process.env.REACT_APP_BASE_URL}/documents/${tokenId}`;
-    const blockchainUrl = Testnet.getExplorerAddressLink(tokenId ?? '');
+    const blockchainUrl = Testnet.getExplorerTransactionLink(document?.tranxHash ?? '');
 
     return <Box bgcolor='white'>
         <Header />
