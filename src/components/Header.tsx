@@ -117,10 +117,10 @@ const Header = () => {
                             {
 
                                 location.pathname !== "/" ? (
-                                    <Button color='inherit'>
-                                        <Link component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit' }}>
+                                    <Button color='inherit' sx={{ mr: 4, color: 'inherit' }} component={RouterLink} to='/' >
+                                    
                                             Home
-                                        </Link></Button>
+                                   </Button>
                                 ) : ""}
                             {
                                 account
@@ -171,10 +171,10 @@ const Header = () => {
                                     location.pathname !== "/" ? (
                                         <MenuItem sx={{ width: "100vw" }}>
 
-                                            <Button color='inherit'>
-                                                <Link component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit', textDecoration: "none", textTransform: "none", display: "flex", justifyContent: "center" }}>
+                                            <Button color='inherit' component={RouterLink} to='/' sx={{ mr: 4, color: 'inherit', textDecoration: "none", textTransform: "none", display: "flex", justifyContent: "center" }} >
+                                   
                                                     Home
-                                        </Link></Button>
+                                       </Button>
 
                                         </MenuItem>) : ""
                                 }
@@ -184,7 +184,7 @@ const Header = () => {
                                             ? <Button color='inherit'
                                                 startIcon={<AccountCircleIcon color="primary" />}
                                                 onClick={(e) => setMenuAnchor(e.currentTarget)}
-                                                sx={{ textTransform: "none" }} >
+                                                sx={{ textTransform: "none", width:"100%" }} >
                                                 Account
                                             </Button>
                                             : <Button
