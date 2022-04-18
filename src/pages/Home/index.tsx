@@ -85,14 +85,14 @@ const Home = () => {
                                 (<Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={handleConnect}>Connect Wallet</Button>)
                                 :
                                 (<>
-                                <Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={() => navigate("/account/documents/new")}>Create Document</Button>
+                                        <Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: { xs: "0 1rem", md: "0rem 1rem" }, borderRadius: "10px" }} onClick={() => navigate("/account/documents/new")}>Create Document</Button>
                                         
                                 </>
                                 )
                         }
                         {
                             account ? 
-                                    (<Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: {xs:"0 1rem" ,md:"1rem 0"}, borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>)
+                                    (<Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: {xs:"0 1rem" ,md:"0rem 1rem"}, borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>)
                                     : ""
                         }
                         </Box>
