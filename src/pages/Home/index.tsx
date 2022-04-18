@@ -77,7 +77,7 @@ const Home = () => {
                         >
                             ValidDoc enables you to take avantage of core features of the blockchain such as immutability, an added layer of security and privacy, in order to protect documents that are vital to you.<br />
 
-                            <Box component={"span"} > Connect your wallet to begin</Box>
+                          
                         </Typography>
                       <Box sx={{display:"flex", flexDirection:{xs:"column", md:"row"}}} >
                             {
@@ -85,14 +85,14 @@ const Home = () => {
                                 (<Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: "1rem 0", borderRadius: "10px" }} onClick={handleConnect}>Connect Wallet</Button>)
                                 :
                                 (<>
-                                        <Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: { xs: "0 1rem", md: "0rem 1rem" }, borderRadius: "10px" }} onClick={() => navigate("/account/documents/new")}>Create Document</Button>
+                                        <Button variant="contained" sx={{ display: "flex", alignItems: "center", margin: { xs: "1rem", md: "0rem 1rem" }, borderRadius: "10px" }} onClick={() => navigate("/account/documents/new")}>Create Document</Button>
                                         
                                 </>
                                 )
                         }
                         {
                             account ? 
-                                    (<Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: {xs:"0 1rem" ,md:"0rem 1rem"}, borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>)
+                                    (<Button variant="outlined" sx={{ display: "flex", alignItems: "center", margin: {xs:"1rem" ,md:"0rem 1rem"}, borderRadius: "10px" }} onClick={() => navigate("/account/documents")}>View your Documents</Button>)
                                     : ""
                         }
                         </Box>
