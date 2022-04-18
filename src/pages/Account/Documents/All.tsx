@@ -73,7 +73,7 @@ export const AllDocuments = () => {
                                                 data && data.length > 0
                                                     ? data?.map((doc: any, index: number) => (
                                                         <ButtonBase key={index}
-                                                            component={RouterLink} to={`/account/documents/${doc.tokenUri}`}
+                                                            component={RouterLink} to={`/account/documents/${doc.tokenId}`}
                                                             sx={{
                                                                 my: 3, mr: 3, textAlign: 'left',
                                                                 width: 250, height: 300
