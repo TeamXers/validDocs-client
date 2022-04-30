@@ -15,8 +15,8 @@ import { formatDate } from "../../../utils/date";
 import { GET_DOCUMENT } from "../../../api/validdocs";
 import { Testnet } from "../../../ChainConfig";
 import { useContractFunction } from "../../../contract/hooks";
-import { Signers } from "./Signers";
-import { Viewers } from "./Viewers";
+import { AddSigner, Signers } from "./Signers";
+import { AddViewer, Viewers } from "./Viewers";
 
 interface ViewDocumentProps {
   breadcrumbs: ReactElement<any, any>;
@@ -160,9 +160,13 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                         <Box display='flex' alignItems='center' mb={2}>
                             <Typography variant='h5' sx={{ flexGrow: 1 }}>
                                 Signers</Typography>
-                        
-                            <Button size='small' color='primary'>
-                                Add</Button>
+
+                            <AddSigner>
+                                {
+                                    (toggleAddSigner) =>
+                                        <Button size='small' color='primary' onClick={toggleAddSigner}>Add</Button>
+                                }
+                            </AddSigner>
                         </Box>
 
                         <Signers />
@@ -173,9 +177,11 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                         <Box display='flex' alignItems='center' mb={2}>
                             <Typography variant='h5' sx={{ flexGrow: 1 }}>
                                 Viewers</Typography>
-                        
-                            <Button size='small' color='primary'>
-                                Add</Button>
+
+                            <AddViewer>{
+                                (toggleAddViewer) =>
+                                    <Button size='small' color='primary' onClick={toggleAddViewer}>Add</Button>
+                            }</AddViewer>
                         </Box>
 
                         <Viewers />
