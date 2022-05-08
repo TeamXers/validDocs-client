@@ -4,6 +4,8 @@ import {
     DialogContent, Paper, Typography
 } from "@mui/material"
 import { ContentCopy } from "@mui/icons-material";
+import { useQuery } from "react-query";
+import { GET_ACCOUNT, GET_VIEWERS } from "../../../api/validdocs";
 
 export const AddViewer: React.FC<{ children: (toggle: () => void) => React.ReactNode }>
     = ({ children }) => {
@@ -32,10 +34,22 @@ export const AddViewer: React.FC<{ children: (toggle: () => void) => React.React
         </>
     }
 
-export const Viewers = () => {
+export const Viewers: React.FC<{ document: string }> = ({ document }) => {
+    const { data } = useQuery(['viewers', { document }],
+        GET_VIEWERS, { placeholderData: [] as any, enabled: !!document });
+
     return <Typography component='div' variant='body2'>
-        <Paper variant='outlined' sx={{ p: 1, mb: 1 }}>AngoJay</Paper>
-        <Paper variant='outlined' sx={{ p: 1, mb: 1 }}>WarriCEO</Paper>
-        <Paper variant='outlined' sx={{ p: 1 }}>Mikkybang</Paper>
+        {
+            data.map((viewer: any, index: number) =>
+                <Paper key={index} variant='outlined' sx={{ p: 1, mb: 1 }}>
+                    <Viewer address={viewer.userAddress} /></Paper>)
+        }
     </Typography>
+}
+
+const Viewer: React.FC<{ address: string }> = ({ address }) => {
+    const { data } = useQuery(['account', { address }],
+        GET_ACCOUNT, { placeholderData: [] as any });
+
+    return data[0]?.username;
 }

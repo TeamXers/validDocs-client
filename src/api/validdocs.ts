@@ -29,31 +29,20 @@ const routes = {
 
 
 export const GET_ACCOUNT = (query: any) => {
-  return validDocsApi.get(routes.account, {
-    params: { address: query.queryKey[1] },
-  });
-};
+    return validDocsApi.get(routes.account, { params: query.queryKey[1] });
+}
 
-export const SET_USERNAME = async (data: {
-  username: string;
-  address: string;
-}) => {
-  const { username, address } = data;
+export const SET_USERNAME = async (data: { username: string, address: string }) => {
+    const { username, address } = data;
 
-  const accounts: any = await validDocsApi.get(routes.account, {
-    params: { address },
-  });
+    const accounts: any = await validDocsApi.get(routes.account, { params: { address } });
 
-  if (accounts.length > 0) {
-    // We only need to update the username
-    return validDocsApi.patch(
-      routes.account,
-      { username },
-      { params: { address } }
-    );
-  }
-  return validDocsApi.post(routes.account, data);
-};
+    if (accounts.length > 0) {
+        // We only need to update the username
+        return validDocsApi.patch(routes.account, { username }, { params: { address } });
+    }
+    return validDocsApi.post(routes.account, data);
+}
 
 export const GET_DOCUMENTS = (query: any) => {
   return validDocsApi.get(routes.docs, {
@@ -86,7 +75,7 @@ export const PATCH_DOCUMENT = async (data: any) => {
 }
 
 export const GET_VIEWERS = async (query: any) => {
-  return validDocsApi.get(routes.docs, { params: { _id: query.queryKey[1] } });
+    return validDocsApi.get(routes.docs, { params: query.queryKey[1] });
 }
 
 export const SEARCH = (query: any) => {

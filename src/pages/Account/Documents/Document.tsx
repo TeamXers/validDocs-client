@@ -17,6 +17,7 @@ import { Testnet } from "../../../ChainConfig";
 import { useContractFunction } from "../../../contract/hooks";
 import { AddSigner, Signers } from "./Signers";
 import { AddViewer, Viewers } from "./Viewers";
+import { PrivacyStatusDialog } from "./PrivacyStatusDialog";
 
 interface ViewDocumentProps {
   breadcrumbs: ReactElement<any, any>;
@@ -65,6 +66,25 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
     const document = data[0];
     const shareableUrl = `${process.env.REACT_APP_BASE_URL}/documents/${tokenId}`;
     const blockchainUrl = Testnet.getExplorerTransactionLink(document?.tranxHash ?? '');
+    const privacyStatus = document?.isPublic ?
+        <Typography component='div' variant='body2' sx={{
+            color: 'white',
+            bgcolor: 'secondary.main',
+            px: 1, py: 0.5,
+            borderRadius: 1,
+            display: 'inline'
+        }}>
+            Public
+        </Typography>
+        : <Typography component='div' variant='body2' sx={{
+            color: 'white',
+            bgcolor: 'secondary.main',
+            px: 1, py: 0.5,
+            borderRadius: 1,
+            display: 'inline'
+        }}>
+            Private
+        </Typography>
 
     return <Box bgcolor='white'>
         <Header />
@@ -77,15 +97,19 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
             <Box display='flex' justifyContent={'space-between'}>
                 <Box sx={{ width: { xs: '100%', md: '60%' } }}>
                     <Box>
-                        <Typography component='div' variant='body2' sx={{
-                            color: 'white',
-                            bgcolor: 'secondary.main',
-                            px: 1, py: 0.5,
-                            borderRadius: 1,
-                            display: 'inline'
-                        }}>
-                            Private
-                        </Typography>
+                        <Box display='flex' alignItems='center'>
+                            {privacyStatus}
+
+                            <PrivacyStatusDialog
+                                tokenId={document?.tokenId || ''} isPublic={document?.isPublic}>
+                                {
+                                    (toggleStatusDialog) => <Button color='primary' size='small'
+                                        onClick={toggleStatusDialog} sx={{ ml: 1 }}>
+                                        change
+                                    </Button>
+                                }
+                            </PrivacyStatusDialog>
+                        </Box>
 
                         <Typography component='div' variant='h3'>
                             <LoaderOrContent transition={transition}>
@@ -172,20 +196,22 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                         <Signers />
                     </Box>
 
-                    <Box component={Paper} variant='outlined'
-                        minHeight='200px' p={2} mt={4} borderRadius={'20px'}>
-                        <Box display='flex' alignItems='center' mb={2}>
-                            <Typography variant='h5' sx={{ flexGrow: 1 }}>
-                                Viewers</Typography>
+                    {
+                        document && !document.isPublic && <Box component={Paper} variant='outlined'
+                            minHeight='200px' p={2} mt={4} borderRadius={'20px'}>
+                            <Box display='flex' alignItems='center' mb={2}>
+                                <Typography variant='h5' sx={{ flexGrow: 1 }}>
+                                    Viewers</Typography>
 
-                            <AddViewer>{
-                                (toggleAddViewer) =>
-                                    <Button size='small' color='primary' onClick={toggleAddViewer}>Add</Button>
-                            }</AddViewer>
+                                <AddViewer>{
+                                    (toggleAddViewer) =>
+                                        <Button size='small' color='primary' onClick={toggleAddViewer}>Add</Button>
+                                }</AddViewer>
+                            </Box>
+
+                            <Viewers document={document._id} />
                         </Box>
-
-                        <Viewers />
-                    </Box>
+                    }
                 </Box>
             </Box>
         </Container>
