@@ -20,11 +20,13 @@ validDocsApi.interceptors.response.use(
 );
 
 const routes = {
-  account: "/accounts",
-  docs: "/docs",
-  search: "/search",
-  pinata: "/pinata",
-};
+  account: '/accounts',
+  docs: '/docs',
+  search: '/search',
+  pinata: '/pinata',
+  invitations: '/invites'
+}
+
 
 export const GET_ACCOUNT = (query: any) => {
   return validDocsApi.get(routes.account, {
@@ -79,8 +81,18 @@ export const POST_DOCUMENT = async (data: any) => {
   return validDocsApi.post(routes.docs, data);
 };
 
+export const PATCH_DOCUMENT = async (data: any) => {
+  return validDocsApi.patch(routes.docs, data.update, { params: data.params });
+}
+
+export const GET_VIEWERS = async (query: any) => {
+  return validDocsApi.get(routes.docs, { params: { _id: query.queryKey[1] } });
+}
+
 export const SEARCH = (query: any) => {
-  return validDocsApi.get(routes.search, {
-    params: { searchTerm: query.queryKey[1] },
-  });
-};
+  return validDocsApi.get(routes.search, { params: { searchTerm: query.queryKey[1] } })
+}
+
+export const GET_INVITATIONS = ({ queryKey }: any) => {
+  return validDocsApi.get(routes.invitations, { params: queryKey[1] });
+}
