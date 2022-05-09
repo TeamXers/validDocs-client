@@ -16,6 +16,7 @@ import { StateProvider } from './context/Provider';
 import { theme } from './theme';
 import { Testnet } from './ChainConfig';
 import { SigningInvitation } from './pages/Account/Invitations/Sign';
+import { ViewInvitation } from './pages/Account/Invitations/View';
 
 
 const SnackbarParent = SnackbarProvider as any;
@@ -71,6 +72,7 @@ function AppRoutes() {
                     </Route>
                     <Route path='invitations' element={<Outlet />}>
                       <Route path='sign/:token' element={<SigningInvitation />} />
+                      <Route path='view/:token' element={<ViewInvitation />} />
                     </Route>
                   </Route>
 

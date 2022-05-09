@@ -1,16 +1,27 @@
 import React, { useState } from "react";
 import {
     ButtonBase, Dialog, DialogTitle,
-    DialogContent, Paper, Typography
+    DialogContent, Paper, Typography,
+    CircularProgress
 } from "@mui/material"
 import { ContentCopy } from "@mui/icons-material";
 import { useQuery } from "react-query";
-import { GET_ACCOUNT, GET_VIEWERS } from "../../../api/validdocs";
+import { useSnackbar } from "notistack";
+import { GET_ACCOUNT, GET_VIEWERS, GET_VIEW_INVITE } from "../../../api/validdocs";
 
-export const AddViewer: React.FC<{ children: (toggle: () => void) => React.ReactNode }>
-    = ({ children }) => {
+export interface AddViewerProps {
+    children: (toggle: () => void) => React.ReactNode
+    tokenId: string
+}
+
+export const AddViewer: React.FC<AddViewerProps>
+    = ({ children, tokenId }) => {
         const [open, setOpen] = useState(false);
+        const { enqueueSnackbar } = useSnackbar();
         const toggle = () => setOpen(o => !o);
+        const { data, isLoading } = useQuery(['view-invite', tokenId],
+            GET_VIEW_INVITE, { placeholderData: { inviteId: '' } as any, enabled: open });
+        const url = `${process.env.REACT_APP_BASE_URL}account/invitations/view/${data?.inviteId}`;
 
         return <>
             {children(toggle)}
@@ -19,24 +30,38 @@ export const AddViewer: React.FC<{ children: (toggle: () => void) => React.React
 
                 <DialogContent>
                     <Typography variant='body2'>Anyone with this link can view</Typography>
-                    <ButtonBase sx={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 1, mt: 1,
-                        border: '1px solid #cccccc', borderRadius: '4px'
-                    }}>
+                    <ButtonBase
+                        onClick={async () => {
+                            try {
+                                if (isLoading) return;
+                                await navigator.clipboard.writeText(url);
+                                enqueueSnackbar('Copied to clipboard', { variant: 'success' });
+                            } catch (e: any) {
+                                enqueueSnackbar(e.message);
+                            }
+                        }}
+                        sx={{
+                            display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 1, mt: 1,
+                            border: '1px solid #cccccc', borderRadius: '4px'
+                        }}>
                         <Typography noWrap sx={{ width: '80%', maxWidth: '400px' }}>
-                            Eu duis esse commodo tempor ea quis id commodo aute veniam mollit eiusmod veniam.
+                            {url}
                         </Typography>
 
-                        <ContentCopy sx={{ ml: 2 }} />
+                        {
+                            isLoading
+                                ? <CircularProgress color='primary' size={20} sx={{ ml: 2 }} />
+                                : <ContentCopy sx={{ ml: 2 }} />
+                        }
                     </ButtonBase>
                 </DialogContent>
             </Dialog>
         </>
     }
 
-export const Viewers: React.FC<{ document: string }> = ({ document }) => {
-    const { data } = useQuery(['viewers', { document }],
-        GET_VIEWERS, { placeholderData: [] as any, enabled: !!document });
+export const Viewers: React.FC<{ documentTokenId: string }> = ({ documentTokenId }) => {
+    const { data } = useQuery(['viewers', { documentTokenId }],
+        GET_VIEWERS, { placeholderData: [] as any, enabled: !!documentTokenId });
 
     return <Typography component='div' variant='body2'>
         {

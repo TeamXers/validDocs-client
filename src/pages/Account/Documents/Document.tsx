@@ -203,13 +203,13 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                                 <Typography variant='h5' sx={{ flexGrow: 1 }}>
                                     Viewers</Typography>
 
-                                <AddViewer>{
+                                <AddViewer tokenId={document.tokenId}>{
                                     (toggleAddViewer) =>
                                         <Button size='small' color='primary' onClick={toggleAddViewer}>Add</Button>
                                 }</AddViewer>
                             </Box>
 
-                            <Viewers document={document._id} />
+                            <Viewers documentTokenId={document.tokenId} />
                         </Box>
                     }
                 </Box>

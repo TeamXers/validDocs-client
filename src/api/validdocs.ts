@@ -20,11 +20,12 @@ validDocsApi.interceptors.response.use(
 );
 
 const routes = {
-  account: '/accounts',
-  docs: '/docs',
-  search: '/search',
-  pinata: '/pinata',
-  invitations: '/invites'
+    account: '/accounts',
+    docs: '/docs',
+    viewers: '/docs/viewers',
+    search: '/search',
+    pinata: '/pinata',
+    invitations: '/invites'
 }
 
 
@@ -75,7 +76,19 @@ export const PATCH_DOCUMENT = async (data: any) => {
 }
 
 export const GET_VIEWERS = async (query: any) => {
-    return validDocsApi.get(routes.docs, { params: query.queryKey[1] });
+    return validDocsApi.get(routes.viewers, { params: query.queryKey[1] });
+}
+
+export const GET_VIEW_INVITE = async ({ queryKey }: any) => {
+    return validDocsApi.get(`${routes.docs}/${queryKey[1]}/view-invite`);
+}
+
+export const POST_VIEWERS = async ({ queryKey }: any) => {
+    return validDocsApi.post(routes.viewers, queryKey[1]);
+}
+
+export const GET_SIGN_INVITE = async ({ queryKey }: any) => {
+    return validDocsApi.get(`${routes.docs}/${queryKey[1]}/sign-invite`);
 }
 
 export const SEARCH = (query: any) => {
