@@ -37,7 +37,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
         }
     }, 'Mining');
 
-    const { data, error, isFetching } = useQuery(
+    const { data, error, isFetching, refetch } = useQuery(
         ['document', tokenId], GET_DOCUMENT,
         {
             enabled: Boolean(tokenId),
@@ -101,7 +101,10 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                             {privacyStatus}
 
                             <PrivacyStatusDialog
-                                tokenId={document?.tokenId || ''} isPublic={document?.isPublic}>
+                                tokenId={document?.tokenId || ''}
+                                isPublic={document?.isPublic}
+                                onChange={() => refetch()}
+                                >
                                 {
                                     (toggleStatusDialog) => <Button color='primary' size='small'
                                         onClick={toggleStatusDialog} sx={{ ml: 1 }}>

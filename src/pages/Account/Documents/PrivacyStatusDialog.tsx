@@ -8,10 +8,11 @@ export interface IPrivacyStatusDialogProps {
     children: (toggle: () => void) => React.ReactNode
     tokenId: string
     isPublic: boolean
+    onChange: () => void
 }
 
 export const PrivacyStatusDialog: React.FC<IPrivacyStatusDialogProps>
-    = ({ children, tokenId, isPublic }) => {
+    = ({ children, tokenId, isPublic, onChange }) => {
         const queryClient = useQueryClient();
         const { mutateAsync, isLoading } = useMutation(PATCH_DOCUMENT);
         const { enqueueSnackbar } = useSnackbar(); 
@@ -28,10 +29,7 @@ export const PrivacyStatusDialog: React.FC<IPrivacyStatusDialogProps>
                 await mutateAsync({
                     update: { isPublic: !initialVal }, params: { tokenId } });
                 queryClient.refetchQueries([['document', tokenId]]);
-                // const data: any = queryClient.getQueryData(['document', tokenId]);
-                // console.log(data, tokenId);
-                // queryClient.setQueryData(
-                //     ['document', tokenId], { ...data, isPublic: !initialVal })
+                onChange();
             } catch (e: any) {
                 console.log(e);
                 setChecked(initialVal);
