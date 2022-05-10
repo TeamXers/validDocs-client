@@ -10,44 +10,52 @@ import { SET_USERNAME } from "../../api/validdocs";
 import { useAppState } from "../../context/Provider";
 
 const FIELDS: IField[] = [
-    {
-        name: 'username',
-        label: 'Username',
-        initialValue: '',
-        validator: yup.string().required("Please enter a username")
-    }
-]
+  {
+    name: "username",
+    label: "Username",
+    initialValue: "",
+    validator: yup.string().required("Please enter a username"),
+  },
+];
 
 export const Profile: React.FC = () => {
-    const { state } = useAppState();
-    const { mutate, isLoading } = useMutation(SET_USERNAME);
+  const { state } = useAppState();
+  const { mutate, isLoading } = useMutation(SET_USERNAME);
 
-    return <Stack minHeight='100vh'>
-        <Header />
+  return (
+    <Stack minHeight="100vh">
+      <Header />
 
-        <Container sx={{ py: 8, flexGrow: 1 }}>
-            <AppBreadcrumbs sx={{ mb: 2 }} links={
-                [
-                    { title: 'Account' },
-                    { title: 'Profile' }
-                ]
-            } />
+      <Container sx={{ py: 8, flexGrow: 1 }}>
+        <AppBreadcrumbs
+          sx={{ mb: 2 }}
+          links={[{ title: "Account" }, { title: "Profile" }]}
+        />
 
-            <Typography variant='h2' sx={{ mb: 6 }}>Your Profile</Typography>
+        <Typography variant="h2" sx={{ mb: 6 }}>
+          Your Profile
+        </Typography>
 
-            <Box sx={{ maxWidth: '50rem' }}>
-                <Form
-                    fields={FIELDS}
-                    onSubmit={({ username }) => mutate({ username, address: state.walletAddress as string })}
-                >
-                    <SpinnerButton loading={isLoading} variant='contained' color='primary' type='submit'>
-                        Save
-                    </SpinnerButton>
-                </Form>
-            </Box>
+        <Box sx={{ maxWidth: "50rem" }}>
+          <Form
+            fields={FIELDS}
+            onSubmit={({ username }) =>
+              mutate({ username, address: state.walletAddress as string })
+            }
+          >
+            <SpinnerButton
+              loading={isLoading}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Save
+            </SpinnerButton>
+          </Form>
+        </Box>
+      </Container>
 
-        </Container>
-
-        <Footer />
+      <Footer />
     </Stack>
-}
+  );
+};
