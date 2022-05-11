@@ -46,6 +46,7 @@ export const useContractFunction = (
         if (options?.verbose) enqueueSnackbar(message.msg, { variant: message.variant });
 
         if (['Success', 'Fail', 'Exception', successState].includes(state.status)) {
+            console.log(state.status, state.transaction, state.errorMessage);
             resetState();
             active.current = false;
         }
