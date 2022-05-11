@@ -65,7 +65,10 @@ export const Signers: React.FC<SignersProps> = ({ documentTokenId }) => {
     const [signers, setSigners] = useState([]);
     const { send } = useContractFunction('getSigners', (status) => {
         setSigners((status.transaction as any) ?? []);
-    }, 'Mining');
+    }, {
+        successState: 'Mining',
+        verbose: false
+    });
 
     useEffect(() => {
         send(documentTokenId);

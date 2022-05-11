@@ -4,10 +4,15 @@ import { useSnackbar, VariantType } from 'notistack';
 import { contract } from './index';
 import axios from 'axios';
 
+export interface Options {
+    successState?: TransactionState,
+    verbose: boolean
+}
+
 export const useContractFunction = (
-  functionName: string,
-  onSuccess: (status: TransactionStatus) => void,
-  successState: TransactionState = "Success"
+    functionName: string,
+    onSuccess: (status: TransactionStatus) => void,
+    options?: Options
 ) => {
     const { enqueueSnackbar } = useSnackbar();
     const { state, send, resetState } = useDappContractFunction(contract, functionName);
@@ -20,6 +25,8 @@ export const useContractFunction = (
         previousState.current = state.status;
 
         if (state.status === 'None') return;
+
+        const successState = options?.successState || 'Success';
 
         const message = {
             'PendingSignature': { msg: 'Complete the transaction in Metamask', variant: 'info' },
@@ -36,7 +43,7 @@ export const useContractFunction = (
             onSuccess(state);
         }
 
-        enqueueSnackbar(message.msg, { variant: message.variant });
+        if (options?.verbose) enqueueSnackbar(message.msg, { variant: message.variant });
 
         if (['Success', 'Fail', 'Exception', successState].includes(state.status)) {
             resetState();
@@ -63,7 +70,7 @@ export const useGetFileToken = (tokenId?: string) => {
             console.log(error);
             enqueueSnackbar('Failed to get File', { variant: 'error' });
         }
-    }, 'Mining');
+    }, { successState: 'Mining', verbose: false });
 
     useEffect(() => {
         (async () => {
@@ -72,7 +79,7 @@ export const useGetFileToken = (tokenId?: string) => {
                 await send(tokenId);
             } catch (error) {
                 console.log(error);
-                enqueueSnackbar('Could not get token info', { variant: 'error' });
+                // enqueueSnackbar('Could not get token info', { variant: 'error' });
             }
         })();
     }, [send, tokenId]);
