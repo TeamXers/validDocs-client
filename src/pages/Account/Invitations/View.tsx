@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "react-query"
 import { useNavigate, useParams } from "react-router-dom";
 import { POST_VIEWERS } from "../../../api/validdocs"
@@ -20,8 +20,10 @@ export const ViewInvitation = () => {
     return <Box>
         <Header />
 
-        <Box width='100%' minHeight='50rem' display='flex' alignItems='center' justifyItems='center'>
+        <Box width='100%' minHeight='50rem' display='flex' alignItems='center' justifyContent='center'>
             {isLoading && <CircularProgress color='primary' size={60} />}
+            {!isLoading && !data &&
+                <Typography align='center' variant='h6'>Oops! This invitation does not exist or has been used</Typography>}
         </Box>
     </Box>
 }
