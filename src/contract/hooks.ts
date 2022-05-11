@@ -1,7 +1,8 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useContractFunction as useDappContractFunction, TransactionStatus, TransactionState } from '@usedapp/core';
 import { useSnackbar, VariantType } from 'notistack';
 import { contract } from './index';
+import axios from 'axios';
 
 export const useContractFunction = (
   functionName: string,
@@ -47,4 +48,33 @@ export const useContractFunction = (
     }, [send]);
 
     return { send: doSend };
+}
+
+export const useGetFileToken = (tokenId?: string) => {
+    const { enqueueSnackbar } = useSnackbar();
+    const [fileUrl, setFileUrl] = useState('');
+    const { send } = useContractFunction('tokenURI', async (status) => {
+        try {
+            const res = await axios.get(status.transaction as any);
+            setFileUrl(res.data.file);
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('Failed to get File', { variant: 'error' });
+        }
+    }, 'Mining');
+
+    useEffect(() => {
+        (async () => {
+            try {
+                if (!tokenId) return;
+                await send(tokenId);
+            } catch (error) {
+                console.log(error);
+                enqueueSnackbar('Could not get token info', { variant: 'error' });
+            }
+        })();
+    }, [send, tokenId]);
+
+
+    return { send, fileUrl };
 }

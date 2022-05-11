@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import {
     Box, Button, Container, Link, Typography,
     Skeleton, IconButton, Paper
@@ -8,13 +8,12 @@ import { useTransition, animated, TransitionFn } from "react-spring";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useSnackbar } from "notistack";
-import axios from "axios";
-import Header from "../../../components/Header";
-import Footer from "../../../components/Footer";
-import { formatDate } from "../../../utils/date";
-import { GET_DOCUMENT } from "../../../api/validdocs";
-import { Testnet } from "../../../ChainConfig";
-import { useContractFunction } from "../../../contract/hooks";
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
+import { formatDate } from '../../../utils/date';
+import { GET_DOCUMENT } from '../../../api/validdocs';
+import { Testnet } from '../../../ChainConfig';
+import { useGetFileToken } from "../../../contract/hooks";
 import { AddSigner, Signers } from "./Signers";
 import { AddViewer, Viewers } from "./Viewers";
 import { PrivacyStatusDialog } from "./PrivacyStatusDialog";
@@ -26,16 +25,7 @@ interface ViewDocumentProps {
 export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
     const { tokenId } = useParams();
     const { enqueueSnackbar } = useSnackbar();
-    const [fileUrl, setFileUrl] = useState('');
-    const { send } = useContractFunction('tokenURI', async (status) => {
-        try {
-            const res = await axios.get(status.transaction as any);
-            setFileUrl(res.data.file);
-        } catch (error) {
-            console.log(error);
-            enqueueSnackbar('Failed to get File', { variant: 'error' });
-        }
-    }, 'Mining');
+    const { fileUrl } = useGetFileToken(tokenId);
 
     const { data, error, isFetching, refetch } = useQuery(
         ['document', tokenId], GET_DOCUMENT,
@@ -50,18 +40,6 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
         enter: { opacity: 1, position: 'relative' },
         leave: { opacity: 0, position: 'absolute' }
     });
-
-    useEffect(() => {
-        (async () => {
-            try {
-                if (!tokenId) return;
-                await send(tokenId);
-            } catch (error) {
-                console.log(error);
-                enqueueSnackbar('Could not get token info', { variant: 'error' });
-            }
-        })();
-    }, [send, tokenId, setFileUrl]);
 
     const document = data[0];
     const shareableUrl = `${process.env.REACT_APP_BASE_URL}/documents/${tokenId}`;
@@ -188,7 +166,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                             <Typography variant='h5' sx={{ flexGrow: 1 }}>
                                 Signers</Typography>
 
-                            <AddSigner>
+                            <AddSigner tokenId={tokenId ?? ''}>
                                 {
                                     (toggleAddSigner) =>
                                         <Button size='small' color='primary' onClick={toggleAddSigner}>Add</Button>
