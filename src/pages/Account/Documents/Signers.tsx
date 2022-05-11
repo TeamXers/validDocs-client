@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { ContentCopy } from "@mui/icons-material";
-import { ButtonBase, CircularProgress, Dialog, DialogContent, DialogTitle, Paper, Typography } from "@mui/material"
+import { Box, ButtonBase, CircularProgress, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material"
 import { useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { GET_SIGN_INVITE } from "../../../api/validdocs";
 import { useContractFunction } from "../../../contract/hooks";
-import { Username } from "../../../components/queries/Accounts";
+import { User } from "../../../components/queries/Accounts";
 
 export interface AddSignerProps {
     children: (toggle: () => void) => React.ReactNode
@@ -71,11 +71,11 @@ export const Signers: React.FC<SignersProps> = ({ documentTokenId }) => {
         send(documentTokenId);
     }, [documentTokenId]);
 
-    return <Typography component='div' variant='body2'>
+    return <>
         {
             signers.map((signer: any, index: number) =>
-                <Paper key={index} variant='outlined' sx={{ p: 1, mb: 1 }}>
-                    <Username address={signer} /></Paper>)
+                <Box key={index} display='flex' alignItems={'center'} sx={{ mb: 2 }}>
+                    <User address={signer} /></Box>)
         }
-    </Typography>
+    </>
 }

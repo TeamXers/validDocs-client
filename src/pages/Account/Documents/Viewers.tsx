@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import {
     ButtonBase, Dialog, DialogTitle,
-    DialogContent, Paper, Typography,
+    DialogContent, Box, Typography,
     CircularProgress
 } from "@mui/material"
 import { ContentCopy } from "@mui/icons-material";
 import { useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { GET_VIEWERS, GET_VIEW_INVITE } from "../../../api/validdocs";
-import { Username } from "../../../components/queries/Accounts";
+import { User } from "../../../components/queries/Accounts";
 
 export interface AddViewerProps {
     children: (toggle: () => void) => React.ReactNode
@@ -67,8 +67,8 @@ export const Viewers: React.FC<{ documentTokenId: string }> = ({ documentTokenId
     return <Typography component='div' variant='body2'>
         {
             data.map((viewer: any, index: number) =>
-                <Paper key={index} variant='outlined' sx={{ p: 1, mb: 1 }}>
-                    <Username address={viewer.userAddress} /></Paper>)
+                <Box key={index} display='flex' alignItems={'center'} sx={{ mb: 2 }}>
+                    <User address={viewer.userAddress} /></Box>)
         }
     </Typography>
 }
