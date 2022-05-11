@@ -174,7 +174,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                             </AddSigner>
                         </Box>
 
-                        <Signers />
+                        {tokenId && <Signers documentTokenId={tokenId} />}
                     </Box>
 
                     {

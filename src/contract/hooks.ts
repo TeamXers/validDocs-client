@@ -26,7 +26,9 @@ export const useContractFunction = (
             'Mining': { msg: 'Transaction sent', variant: 'info' },
             'Success': { msg: 'Transaction complete!', variant: 'success' },
             'Fail': { msg: 'Transaction failed!', variant: 'error' },
-            'Exception': { msg: 'An unexpected error occurred', variant: 'error' },
+            'Exception': {
+                msg: state.errorMessage ?? 'An unexpected error occurred', variant: 'error'
+            },
             [successState]: { msg: 'Transaction complete!', variant: 'success' },
         }[state.status] as { msg: string, variant: VariantType };
 

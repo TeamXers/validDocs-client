@@ -7,7 +7,8 @@ import {
 import { ContentCopy } from "@mui/icons-material";
 import { useQuery } from "react-query";
 import { useSnackbar } from "notistack";
-import { GET_ACCOUNT, GET_VIEWERS, GET_VIEW_INVITE } from "../../../api/validdocs";
+import { GET_VIEWERS, GET_VIEW_INVITE } from "../../../api/validdocs";
+import { Username } from "../../../components/queries/Accounts";
 
 export interface AddViewerProps {
     children: (toggle: () => void) => React.ReactNode
@@ -67,14 +68,7 @@ export const Viewers: React.FC<{ documentTokenId: string }> = ({ documentTokenId
         {
             data.map((viewer: any, index: number) =>
                 <Paper key={index} variant='outlined' sx={{ p: 1, mb: 1 }}>
-                    <Viewer address={viewer.userAddress} /></Paper>)
+                    <Username address={viewer.userAddress} /></Paper>)
         }
     </Typography>
-}
-
-const Viewer: React.FC<{ address: string }> = ({ address }) => {
-    const { data } = useQuery(['account', { address }],
-        GET_ACCOUNT, { placeholderData: [] as any });
-
-    return data[0]?.username;
 }
