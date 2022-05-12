@@ -49,6 +49,7 @@ const Header = () => {
     error,
     library,
     switchNetwork,
+    chainId,
   } = useEthers();
   const location = useLocation();
 
@@ -62,7 +63,13 @@ const Header = () => {
   useQuery(["account", account], GET_ACCOUNT as any, {
     enabled: Boolean(account),
     onError: (error: any) => {
-      enqueueSnackbar(error.message, { variant: "error" });
+      if (error.code === 1013) {
+        console.log("tre");
+      }
+      // else {
+      //   enqueueSnackbar(error.message, { variant: "error" });
+      // }
+      console.log("utopia");
     },
     onSuccess: (data: any) => {
       if (!updateState) {
@@ -85,41 +92,61 @@ const Header = () => {
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
+      if (
+        error.message ===
+        "MetaMask: Disconnected from chain. Attempting to connect."
+      ) {
+        console.log("tre");
+      } else {
+        // enqueueSnackbar(error.message, { variant: "error" });
+        console.log("ut2", error);
+      }
     }
   }, [error]);
 
   const handleConnect = async () => {
-    // setActivateError("")
+    // setActivateError("");
     await activateBrowserWallet();
-    // console.log(Testnet.chainId)
-    // if(Testnet.chainId !== chainId )  {
-    try {
-      await switchNetwork(Testnet.chainId);
-    } catch (e: any) {
-      if (e.code === 4902) {
+    navigate("/account/documents");
+  };
+  const handleSwitch = async () => {
+    if (state.account?.address) {
+      console.log(Testnet.chainId);
+      // console.log(await getDefaultProvider().getNetwork)
+
+      if (Testnet.chainId !== chainId) {
         try {
-          await library?.send("wallet_addEthereumChain", [
-            {
-              chainId: utils.hexlify(1666700000),
-              chainName: "Harmony Testnet Shard 0",
-              nativeCurrency: {
-                name: "Harmony Testnet",
-                symbol: "ONE",
-                decimals: 18,
-              },
-              rpcUrls: ["https://api.s0.b.hmny.io"],
-              blockExplorerUrls: ["https://explorer.pops.one/"],
-            },
-          ]);
+          // ethereum.request({ method: 'eth_chainId' }).
+          await switchNetwork(Testnet.chainId);
+          await activateBrowserWallet();
         } catch (e: any) {
-          console.log(e.message);
+          if (e.code === 4902) {
+            try {
+              await library?.send("wallet_addEthereumChain", [
+                {
+                  chainId: utils.hexlify(1666700000),
+                  chainName: "Harmony Testnet Shard 0",
+                  nativeCurrency: {
+                    name: "Harmony Testnet",
+                    symbol: "ONE",
+                    decimals: 18,
+                  },
+                  rpcUrls: ["https://api.s0.b.hmny.io"],
+                  blockExplorerUrls: ["https://explorer.pops.one/"],
+                },
+              ]);
+            } catch (e: any) {
+              console.log(e.message);
+            }
+          }
         }
+        navigate("/account/documents");
       }
     }
-    navigate("/account/documents");
-    // }
   };
+  useEffect(() => {
+    handleSwitch();
+  }, [state.account]);
 
   return (
     <>
@@ -287,6 +314,32 @@ const Header = () => {
                 ) : (
                   ""
                 )}
+
+                <MenuItem sx={{ width: "100vw", display: "flex" }}>
+                  {account ? (
+                    <Button
+                      color="inherit"
+                      startIcon={<AccountCircleIcon color="primary" />}
+                      onClick={(e) => setMenuAnchor(e.currentTarget)}
+                      sx={{
+                        textTransform: "none",
+                        width: "100%",
+                        justifyContent: { xs: "flex-start", md: "center" },
+                      }}
+                    >
+                      Account
+                    </Button>
+                  ) : (
+                    <Button
+                      startIcon={<AccountBalanceWalletIcon color="primary" />}
+                      onClick={handleConnect}
+                      color="inherit"
+                      sx={{ textTransform: "none" }}
+                    >
+                      Connect
+                    </Button>
+                  )}
+                </MenuItem>
                 {location.pathname !== `/search/${term}` ? (
                   <MenuItem>
                     <>
@@ -296,7 +349,7 @@ const Header = () => {
                           sx={{
                             position: "absolute",
                             top: "50%",
-                            left: 0,
+                            left: "1.2rem",
                             transform: `translate(0px, ${-44}%)`,
                           }}
                         />
@@ -314,6 +367,7 @@ const Header = () => {
                               e: React.ChangeEvent<HTMLInputElement>
                             ) => setSearchTerm(e.target.value)}
                             placeholder="Find Document"
+                            style={{ paddingLeft: "35px" }}
                             name="search"
                           />
                         </form>
@@ -323,27 +377,6 @@ const Header = () => {
                 ) : (
                   ""
                 )}
-                <MenuItem sx={{ width: "100vw", display: "flex" }}>
-                  {account ? (
-                    <Button
-                      color="inherit"
-                      startIcon={<AccountCircleIcon color="primary" />}
-                      onClick={(e) => setMenuAnchor(e.currentTarget)}
-                      sx={{ textTransform: "none", width: "100%" }}
-                    >
-                      Account
-                    </Button>
-                  ) : (
-                    <Button
-                      startIcon={<AccountBalanceWalletIcon color="primary" />}
-                      onClick={handleConnect}
-                      color="inherit"
-                      sx={{ textTransform: "none" }}
-                    >
-                      Connect
-                    </Button>
-                  )}
-                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>
@@ -368,6 +401,10 @@ const Header = () => {
           <MenuItem
             onClick={() => {
               deactivate();
+              if (!updateState) {
+                throw new Error("updateState is undefined!");
+              }
+              updateState({ walletConnected: false, walletAddress: undefined });
               setMenuAnchor(null);
               navigate("/");
             }}

@@ -125,6 +125,16 @@ const DocFileInput: React.FC<Pick<IField, "name">> = ({ name }) => {
     onDropAccepted: (files) => {
       helpers.setValue(files[0]);
     },
+    accept: [
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
+      "application/pdf",
+      "	application/vnd.ms-excel",
+      "text/plain",
+      "application/vnd.ms-powerpoint",
+      "image/jpeg",
+      "image/png",
+    ],
   });
 
   return (
@@ -163,9 +173,14 @@ const DocFileInput: React.FC<Pick<IField, "name">> = ({ name }) => {
         </Box>
       )}
       {!field.value && (
-        <Typography>
-          Drag 'n' drop some files here, or click to select files
-        </Typography>
+        <>
+          <Typography>
+            Drag 'n' drop some files here, or click to select files
+          </Typography>
+          <Typography sx={{ fontSize: "10px", color: "#707070" }}>
+            {"*"} PDF, DOC, DOCX, XLS, TXT, PPT, JPG, JPEG, and PNG (max 20mb)
+          </Typography>
+        </>
       )}
     </ButtonBase>
   );

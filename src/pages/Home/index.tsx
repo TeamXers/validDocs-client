@@ -26,15 +26,16 @@ import SearchImage from "../../assets/undraw_searching_re_3ra9.svg";
 import FileImage from "../../assets/undraw_my_files_swob.svg";
 import { useEthers } from "@usedapp/core";
 import { Testnet } from "../../ChainConfig";
-import { utils } from "ethers";
+import { utils, providers, getDefaultProvider } from "ethers";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { useAppState } from "../../context/Provider";
 
 const Home = () => {
   const [activateError, setActivateError] = useState("");
   const [term, setTerm] = useState("");
   const navigate = useNavigate();
-
+  const { state } = useAppState();
   const {
     activateBrowserWallet,
     account,
@@ -57,40 +58,53 @@ const Home = () => {
     // setSearchParams({searchTerm :term})
     navigate(`/search/${term}`);
   };
+  const getChainId = async () => {
+    const chainId = await library?.send("eth_chainId", [{}]);
+    return chainId;
+  };
   const handleConnect = async () => {
     setActivateError("");
     await activateBrowserWallet();
+    navigate("/account/documents");
+  };
+  const handleSwitch = async () => {
+    if (state.account?.address) {
+      console.log(Testnet.chainId);
+      console.log(await getDefaultProvider().getNetwork);
 
-    console.log(Testnet.chainId);
-    // if(Testnet.chainId !== chainId )  {
-    try {
-      await switchNetwork(Testnet.chainId);
-    } catch (e: any) {
-      console.log(e);
-      if (e.code === 4902) {
+      if (Testnet.chainId !== chainId) {
         try {
-          await library?.send("wallet_addEthereumChain", [
-            {
-              chainId: utils.hexlify(1666700000),
-              chainName: "Harmony Testnet Shard 0",
-              nativeCurrency: {
-                name: "Harmony Testnet",
-                symbol: "ONE",
-                decimals: 18,
-              },
-              rpcUrls: ["https://api.s0.b.hmny.io"],
-              blockExplorerUrls: ["https://explorer.pops.one/"],
-            },
-          ]);
+          // ethereum.request({ method: 'eth_chainId' }).
+          await switchNetwork(Testnet.chainId);
+          await activateBrowserWallet();
         } catch (e: any) {
-          console.log(e.message);
+          if (e.code === 4902) {
+            try {
+              await library?.send("wallet_addEthereumChain", [
+                {
+                  chainId: utils.hexlify(1666700000),
+                  chainName: "Harmony Testnet Shard 0",
+                  nativeCurrency: {
+                    name: "Harmony Testnet",
+                    symbol: "ONE",
+                    decimals: 18,
+                  },
+                  rpcUrls: ["https://api.s0.b.hmny.io"],
+                  blockExplorerUrls: ["https://explorer.pops.one/"],
+                },
+              ]);
+            } catch (e: any) {
+              console.log(e.message);
+            }
+          }
         }
+        navigate("/account/documents");
       }
     }
-    navigate("/account/documents");
-    // }
   };
-
+  useEffect(() => {
+    handleSwitch();
+  }, [state.account]);
   return (
     <>
       <Helmet>
@@ -111,12 +125,12 @@ const Home = () => {
         >
           <Box sx={{ maxWidth: { xs: "100%", md: "50%" } }}>
             <Typography
-              variant={"h1"}
+              variant={"h2"}
               sx={{
                 fontWeight: "600",
                 color: "#252525",
-                fontSize: "32px !important",
-                lineHeight: "32.5px",
+                fontSize: "38px !important",
+                lineHeight: "38.5px",
               }}
             >
               Protect the Authenticity and Integrity of Your Documents
@@ -443,7 +457,11 @@ const Home = () => {
             </Box>
           </Typography>
           <Typography
-            sx={{ textAlign: "center", color: "rgba(0, 0, 0, 0.54)" }}
+            sx={{
+              textAlign: "center",
+              color: "rgba(0, 0, 0, 0.54)",
+              margin: "1rem 0 0rem 0",
+            }}
           >
             Start for free. Go Pro with more features and no limits.
           </Typography>
