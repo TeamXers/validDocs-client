@@ -40,7 +40,7 @@ const Footer = () => {
             sx={{
               display: "flex",
               width: "150px",
-              margin: { xs: "0 auto", md: "0 4rem" },
+              margin: { xs: "2rem auto", md: "0 4rem" },
               opacity: "0.7",
               ":hover": { opacity: "1" },
             }}
@@ -123,10 +123,11 @@ const Footer = () => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: { xs: "center", md: "flex-start" },
+                  margin: { xs: "2rem 0 0 0", md: "0" },
                 }}
               >
                 <Typography
-                  component="h6"
+                  variant="h6"
                   sx={{ color: "#fff", margin: "0 0 1rem 0" }}
                 >
                   Quick Links

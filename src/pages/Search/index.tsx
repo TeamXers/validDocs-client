@@ -186,7 +186,10 @@ const Search = () => {
                                           "0px 3px 10px 0 rgba(0, 0, 0, 0.25)",
                                         width: { xs: "200px", md: "350px" },
                                         height: "50px",
-                                        margin: { xs: "1rem 0", md: "0 1rem" },
+                                        margin: {
+                                          xs: "1rem 0",
+                                          md: "1rem 1rem 0 1rem",
+                                        },
                                       }}
                                     >
                                       <Box

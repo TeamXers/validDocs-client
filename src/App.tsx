@@ -1,23 +1,27 @@
-import { Routes, BrowserRouter, Route, Outlet } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
-import { SnackbarProvider } from 'notistack';
-import { DAppProvider, Config, DEFAULT_SUPPORTED_CHAINS, Mainnet } from '@usedapp/core';
-import {getDefaultProvider} from "ethers"
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { Account } from './pages/Account/Account';
-import { AllDocuments } from './pages/Account/Documents/All';
-import { CreateDocument } from './pages/Account/Documents/Create';
-import { ViewDocument } from './pages/Account/Documents/Document';
-import { Profile } from './pages/Account/Profile';
-import Home from './pages/Home';
+import { Routes, BrowserRouter, Route, Outlet } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
+import { SnackbarProvider } from "notistack";
+import {
+  DAppProvider,
+  Config,
+  DEFAULT_SUPPORTED_CHAINS,
+  Mainnet,
+} from "@usedapp/core";
+import { getDefaultProvider } from "ethers";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Account } from "./pages/Account/Account";
+import { AllDocuments } from "./pages/Account/Documents/All";
+import { CreateDocument } from "./pages/Account/Documents/Create";
+import { ViewDocument } from "./pages/Account/Documents/Document";
+import { Profile } from "./pages/Account/Profile";
+import Home from "./pages/Home";
 import Search from "./pages/Search";
-import { AppBreadcrumbs } from './components/Breadcrumbs';
-import { StateProvider } from './context/Provider';
-import { theme } from './theme';
-import { Testnet } from './ChainConfig';
-import { SigningInvitation } from './pages/Account/Invitations/Sign';
-import { ViewInvitation } from './pages/Account/Invitations/View';
-
+import { AppBreadcrumbs } from "./components/Breadcrumbs";
+import { StateProvider } from "./context/Provider";
+import { theme } from "./theme";
+import { Testnet } from "./ChainConfig";
+import { SigningInvitation } from "./pages/Account/Invitations/Sign";
+import { ViewInvitation } from "./pages/Account/Invitations/View";
 
 const SnackbarParent = SnackbarProvider as any;
 
@@ -70,9 +74,12 @@ function AppRoutes() {
                         }
                       />
                     </Route>
-                    <Route path='invitations' element={<Outlet />}>
-                      <Route path='sign/:token' element={<SigningInvitation />} />
-                      <Route path='view/:token' element={<ViewInvitation />} />
+                    <Route path="invitations" element={<Outlet />}>
+                      <Route
+                        path="sign/:token"
+                        element={<SigningInvitation />}
+                      />
+                      <Route path="view/:token" element={<ViewInvitation />} />
                     </Route>
                   </Route>
 
