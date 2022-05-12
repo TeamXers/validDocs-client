@@ -96,9 +96,9 @@ const Header = () => {
         error.message ===
         "MetaMask: Disconnected from chain. Attempting to connect."
       ) {
-        console.log("tre");
+   
       } else {
-        // enqueueSnackbar(error.message, { variant: "error" });
+        enqueueSnackbar(error.message, { variant: "error" });
         console.log("ut2", error);
       }
     }
@@ -111,12 +111,11 @@ const Header = () => {
   };
   const handleSwitch = async () => {
     if (state.account?.address) {
-      console.log(Testnet.chainId);
-      // console.log(await getDefaultProvider().getNetwork)
+
 
       if (Testnet.chainId !== chainId) {
         try {
-          // ethereum.request({ method: 'eth_chainId' }).
+   
           await switchNetwork(Testnet.chainId);
           await activateBrowserWallet();
         } catch (e: any) {
@@ -146,7 +145,7 @@ const Header = () => {
   };
   useEffect(() => {
     handleSwitch();
-  }, [state.account]);
+  }, [account]);
 
   return (
     <>

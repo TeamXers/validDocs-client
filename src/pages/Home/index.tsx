@@ -55,13 +55,10 @@ const Home = () => {
     setTerm(e.target.value);
   };
   const handleSubmit = () => {
-    // setSearchParams({searchTerm :term})
+
     navigate(`/search/${term}`);
   };
-  const getChainId = async () => {
-    const chainId = await library?.send("eth_chainId", [{}]);
-    return chainId;
-  };
+
   const handleConnect = async () => {
     setActivateError("");
     await activateBrowserWallet();
@@ -69,12 +66,11 @@ const Home = () => {
   };
   const handleSwitch = async () => {
     if (state.account?.address) {
-      console.log(Testnet.chainId);
-      console.log(await getDefaultProvider().getNetwork);
+    
 
       if (Testnet.chainId !== chainId) {
         try {
-          // ethereum.request({ method: 'eth_chainId' }).
+       
           await switchNetwork(Testnet.chainId);
           await activateBrowserWallet();
         } catch (e: any) {
@@ -104,7 +100,7 @@ const Home = () => {
   };
   useEffect(() => {
     handleSwitch();
-  }, [state.account]);
+  }, [account]);
   return (
     <>
       <Helmet>
