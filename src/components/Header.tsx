@@ -6,11 +6,9 @@ import {
   Typography,
   Container,
   Button,
-  ButtonBase,
   Menu,
   MenuItem,
   Divider,
-  Link,
   IconButton,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -37,9 +35,9 @@ const Header = () => {
   const { state, updateState } = useAppState();
   const navigate = useNavigate();
   const { term } = useParams();
+  const [searchTerm, setSearchTerm] = useState(term ?? "");
   const [menuAnchor, setMenuAnchor] = useState<any>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const {
     activateBrowserWallet,
@@ -96,7 +94,6 @@ const Header = () => {
         error.message ===
         "MetaMask: Disconnected from chain. Attempting to connect."
       ) {
-   
       } else {
         enqueueSnackbar(error.message, { variant: "error" });
         console.log("ut2", error);
@@ -111,11 +108,8 @@ const Header = () => {
   };
   const handleSwitch = async () => {
     if (state.account?.address) {
-
-
       if (Testnet.chainId !== chainId) {
         try {
-   
           await switchNetwork(Testnet.chainId);
           await activateBrowserWallet();
         } catch (e: any) {
@@ -146,6 +140,25 @@ const Header = () => {
   useEffect(() => {
     handleSwitch();
   }, [account]);
+
+  useEffect(() => {
+    if (!updateState || active) return;
+    if (!state.walletConnected) return;
+
+    updateState({ walletConnected: false, walletAddress: undefined });
+  }, [active, state, updateState]);
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
+  }, [error]);
+
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    navigate(`/search/${searchTerm}`);
+  };
 
   return (
     <>
@@ -219,13 +232,7 @@ const Header = () => {
               {location.pathname !== `/search/${term}` ? (
                 <>
                   <div className="container-2" style={{ marginLeft: "1rem" }}>
-                    <form
-                      onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => {
-                        e.preventDefault();
-
-                        navigate(`/search/${searchTerm}`);
-                      }}
-                    >
+                    <form onSubmit={handleSubmit}>
                       <input
                         type="search"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -352,13 +359,7 @@ const Header = () => {
                             transform: `translate(0px, ${-44}%)`,
                           }}
                         />
-                        <form
-                          onSubmit={(e: React.ChangeEvent<HTMLFormElement>) => {
-                            e.preventDefault();
-
-                            navigate(`/search/${searchTerm}`);
-                          }}
-                        >
+                        <form onSubmit={handleSubmit}>
                           <input
                             className="search-header-mobile"
                             type="search"
@@ -380,7 +381,6 @@ const Header = () => {
             </Box>
           </Toolbar>
         </Container>
-
         <Menu
           anchorEl={menuAnchor}
           open={Boolean(menuAnchor)}

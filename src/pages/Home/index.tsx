@@ -55,7 +55,6 @@ const Home = () => {
     setTerm(e.target.value);
   };
   const handleSubmit = () => {
-
     navigate(`/search/${term}`);
   };
 
@@ -66,11 +65,8 @@ const Home = () => {
   };
   const handleSwitch = async () => {
     if (state.account?.address) {
-    
-
       if (Testnet.chainId !== chainId) {
         try {
-       
           await switchNetwork(Testnet.chainId);
           await activateBrowserWallet();
         } catch (e: any) {
