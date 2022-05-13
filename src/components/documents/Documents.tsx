@@ -3,6 +3,7 @@ import { useTransition, animated } from "react-spring";
 import { Link as RouterLink } from "react-router-dom";
 import DocumentIcon from "../../assets/document.svg";
 import { formatDate } from "../../utils/date";
+import { useAppState } from "../../context/Provider";
 
 const Skeleton = styled(MuiSkeleton)<SkeletonProps>(() => ({
     transform: "scale(1, 1)",
@@ -14,6 +15,7 @@ interface DocumentsProps {
 }
 
 export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ documents, isLoading, ...boxProps }) => {
+    const { state } = useAppState();
     const transitions = useTransition(isLoading, {
         enter: { opacity: 1, position: "relative" },
         leave: { opacity: 0, position: "absolute", width: "100%" },
@@ -36,7 +38,11 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
                                     <ButtonBase
                                         key={index}
                                         component={RouterLink}
-                                        to={`/account/documents/${doc.tokenId}`}
+                                        to={
+                                            doc.authorAddress === state.walletAddress
+                                            ? `/account/documents/${doc.tokenId}`
+                                            : `/documents/${doc.tokenId}`
+                                        }
                                         sx={{
                                             my: 3,
                                             mr: 3,
