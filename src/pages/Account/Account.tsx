@@ -1,33 +1,34 @@
 import { Box, Skeleton, Stack } from "@mui/material";
 import { useEthers } from "@usedapp/core";
 import { useSnackbar } from "notistack";
-import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { useAppState } from "../../context/Provider";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { SlidingAccountForm } from "../../components/accounts/AccountForm";
 
 export const Account = () => {
   const { state } = useAppState();
   const location = useLocation();
-  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { activateBrowserWallet } = useEthers();
+  const [showSetup, setShowSetup] = useState(false);
 
   useEffect(() => {
     if (state.account || !state.walletConnected) return;
-    if (location.pathname === "/account/profile") return;
 
-    navigate("/account/profile");
-    enqueueSnackbar("You need to connect your wallet and set your username", {
-      variant: "info",
-    });
-  }, [state, location, navigate]);
+    (async () => {
+      if (!state.walletConnected) {
+        await activateBrowserWallet();
+      }
 
-  useEffect(() => {
-    if (state.walletConnected) return;
-    activateBrowserWallet();
-  }, [activateBrowserWallet, state]);
+      setShowSetup(true);
+      enqueueSnackbar("Set your display name", {
+        variant: "info",
+      });
+    })();
+  }, [state, activateBrowserWallet, location, setShowSetup]);
 
   return (
     <>
@@ -45,6 +46,8 @@ export const Account = () => {
           <Footer />
         </Box>
       )}
+
+      <SlidingAccountForm open={showSetup} onClose={() => setShowSetup(false)} />
     </>
   );
 };

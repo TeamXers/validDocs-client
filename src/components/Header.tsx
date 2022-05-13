@@ -58,7 +58,7 @@ const Header = () => {
     setAnchorElNav(null);
   };
 
-  useQuery(["account", account], GET_ACCOUNT as any, {
+  useQuery(["account", { address: account }], GET_ACCOUNT as any, {
     enabled: Boolean(account),
     onError: (error: any) => {
       if (error.code === 1013) {
