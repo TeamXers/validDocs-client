@@ -23,7 +23,7 @@ import { useGetFileToken } from "../../../contract/hooks";
 import { AddSigner, Signers } from "./Signers";
 import { AddViewer, Viewers } from "./Viewers";
 import { PrivacyStatusDialog } from "./PrivacyStatusDialog";
-import { User } from "../../../components/queries/Accounts";
+import { User } from "../../../components/accounts/UserHero";
 
 interface ViewDocumentProps {
     breadcrumbs: ReactElement<any, any>;
