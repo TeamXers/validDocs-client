@@ -55,7 +55,7 @@ export const SET_USERNAME = async (data: {
 
 export const GET_DOCUMENTS = (query: any) => {
   return validDocsApi.get(routes.docs, {
-    params: { author: query.queryKey[1] },
+    params: query.queryKey[1],
   });
 };
 
