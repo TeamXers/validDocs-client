@@ -13,7 +13,7 @@ import { Account } from "./pages/Account/Account";
 import { AllDocuments } from "./pages/Account/Documents/All";
 import { CreateDocument } from "./pages/Account/Documents/Create";
 import { ViewDocument } from "./pages/Account/Documents/Document";
-import { Profile } from "./pages/Account/Profile";
+import { CurrentUserProfile, Profile } from "./pages/Account/Profile";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import { AppBreadcrumbs } from "./components/Breadcrumbs";
@@ -50,7 +50,7 @@ function AppRoutes() {
 
                   <Route path="account" element={<Account />}>
                     <Route index element={<AllDocuments />} />
-                    <Route path="profile" element={<Profile />} />
+                    <Route path="profile" element={<CurrentUserProfile />} />
                     <Route path="documents" element={<Outlet />}>
                       <Route index element={<AllDocuments />} />
                       <Route path="new" element={<CreateDocument />} />
@@ -81,6 +81,10 @@ function AppRoutes() {
                       />
                       <Route path="view/:token" element={<ViewInvitation />} />
                     </Route>
+                  </Route>
+
+                  <Route path="accounts" element={<Outlet />}>
+                    <Route path=":address" element={<Profile />} />
                   </Route>
 
                   <Route path="documents" element={<Outlet />}>
