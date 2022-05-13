@@ -1,7 +1,11 @@
+import React, { useState } from "react";
 import {
+  Box,
   Button,
   Container,
   Stack,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
@@ -13,7 +17,14 @@ import Footer from "../../../components/Footer";
 import { GET_DOCUMENTS } from "../../../api/validdocs";
 import { useAppState } from "../../../context/Provider";
 import { Documents } from "../../../components/documents/Documents";
+import { TabPanel } from "../../../components/TabPanel";
 
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export const AllDocuments = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -30,6 +41,11 @@ export const AllDocuments = () => {
       },
     }
   );
+  const [tab, settab] = useState(0);
+
+  const handleChangeTab = (event: React.SyntheticEvent, newtab: number) => {
+    settab(newtab);
+  };
 
   return (
     <Stack minHeight="100vh">
@@ -42,7 +58,7 @@ export const AllDocuments = () => {
         />
 
         <Typography variant="h2" sx={{ mb: 1 }}>
-          Your Documents
+          All Documents
         </Typography>
 
         <Button
@@ -54,7 +70,25 @@ export const AllDocuments = () => {
           New
         </Button>
 
-        <Documents isLoading={isFetching} documents={data ?? []} sx={{ mt: 6 }} />
+        <Box sx={{ width: '100%', mt: 4 }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={tab} onChange={handleChangeTab} aria-label="all documents">
+              <Tab label="Yours" {...a11yProps(0)} />
+              <Tab label="Shared" {...a11yProps(1)} />
+              <Tab label="Signed" {...a11yProps(2)} />
+            </Tabs>
+          </Box>
+
+          <TabPanel value={tab} index={0}>
+            <Documents isLoading={isFetching} documents={data ?? []} />
+          </TabPanel>
+          <TabPanel value={tab} index={1}>
+            <Documents isLoading={isFetching} documents={data ?? []} />
+          </TabPanel>
+          <TabPanel value={tab} index={2}>
+            <Documents isLoading={isFetching} documents={data ?? []} />
+          </TabPanel>
+        </Box>
       </Container>
 
       <Footer />
