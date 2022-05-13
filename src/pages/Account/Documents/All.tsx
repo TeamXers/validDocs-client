@@ -30,11 +30,11 @@ export const AllDocuments = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { state } = useAppState();
   const { data, isFetching } = useQuery(
-    ["Docs", state.account?.username],
+    ["Docs", { authorAddress: state.walletAddress }],
     GET_DOCUMENTS as any,
     {
       initialData: [] as any[],
-      enabled: Boolean(state.account?.username),
+      enabled: Boolean(state.walletAddress),
       retry: 3,
       onError: (error: any) => {
         enqueueSnackbar(error.message, { variant: "error" });
