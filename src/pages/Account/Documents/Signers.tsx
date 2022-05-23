@@ -13,7 +13,7 @@ import { useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { GET_SIGN_INVITE } from "../../../api/validdocs";
 import { useContractFunction } from "../../../contract/hooks";
-import { User } from "../../../components/queries/Accounts";
+import { User } from "../../../components/accounts/UserHero";
 
 export interface AddSignerProps {
   children: (toggle: () => void) => React.ReactNode;

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { Box, ButtonBase, Container, Typography } from "@mui/material";
+import { Box, ButtonBase, Checkbox, Container, FormControlLabel, Typography } from "@mui/material";
 import { PictureAsPdf } from "@mui/icons-material";
-import { useField } from "formik";
+import { Field, FieldProps, useField } from "formik";
 import * as yup from "yup";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "react-query";
@@ -49,7 +49,7 @@ export const CreateDocument = () => {
       tranxHash: status.transaction?.hash,
     });
     navigate(`/account/documents/${tokenId}`);
-  });
+  }, { verbose: true });
 
   const { mutate: saveDoc, isLoading } = useMutation(POST_DOC_FILE, {
     onSuccess: async (data: any, document: any) => {
@@ -74,7 +74,10 @@ export const CreateDocument = () => {
 
   const onSubmit = useCallback(
     async (values: any) => {
-      saveDoc({ ...values, author: state.account?.username });
+      saveDoc({
+        ...values, isPublic: values.isPublic?.[0] === 'on' ? true : false,
+        authorAddress: state.walletAddress
+      });
     },
     [saveDoc, state]
   );
@@ -100,6 +103,19 @@ export const CreateDocument = () => {
         <Box maxWidth="50rem">
           <Form fields={FIELDS} onSubmit={onSubmit}>
             <DocFileInput name="document" />
+
+            <Field name='isPublic'>
+              {({ field }: FieldProps) =>
+                <FormControlLabel
+                  control={<Checkbox
+                    name={field.name}
+                    checked={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    sx={{ fontSize: 20 }} />}
+                  label="Is this document open to the public"
+                  sx={{ display: 'block', mb: 4 }} />}
+            </Field>
 
             <SpinnerButton
               loading={isLoading}
@@ -152,7 +168,7 @@ const DocFileInput: React.FC<Pick<IField, "name">> = ({ name }) => {
         textAlign: "center",
         width: "100%",
         height: "10rem",
-        mb: 6,
+        mb: 2,
         transition: "border-color ease-in-out 200ms",
         ["&:hover"]: {
           borderColor: "primary.main",

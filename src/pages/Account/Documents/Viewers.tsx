@@ -12,7 +12,7 @@ import { ContentCopy } from "@mui/icons-material";
 import { useQuery } from "react-query";
 import { useSnackbar } from "notistack";
 import { GET_VIEWERS, GET_VIEW_INVITE } from "../../../api/validdocs";
-import { User } from "../../../components/queries/Accounts";
+import { User } from "../../../components/accounts/UserHero";
 
 export interface AddViewerProps {
   children: (toggle: () => void) => React.ReactNode;
