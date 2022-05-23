@@ -90,11 +90,12 @@ const Header = () => {
 
   useEffect(() => {
     if (error) {
-      if (
-        error.message ===
-        "MetaMask: Disconnected from chain. Attempting to connect."
-      ) {
-      } else {
+      if ( error.message.includes(`"code": 1013`)) {
+        console.log("dfghjmk,l.kjmhg")
+        console.log(error.message)
+           activateBrowserWallet();
+      } 
+      else {
         enqueueSnackbar(error.message, { variant: "error" });
         console.log("ut2", error);
       }
@@ -107,12 +108,13 @@ const Header = () => {
     navigate("/account/documents");
   };
   const handleSwitch = async () => {
-    if (state.account?.address) {
+    if (account) {
       if (Testnet.chainId !== chainId) {
         try {
           await switchNetwork(Testnet.chainId);
           await activateBrowserWallet();
         } catch (e: any) {
+      
           if (e.code === 4902) {
             try {
               await library?.send("wallet_addEthereumChain", [
@@ -132,6 +134,9 @@ const Header = () => {
               console.log(e.message);
             }
           }
+            else if(e.code === 1013){
+           console.log("qwertyuiop")
+         }
         }
         navigate("/account/documents");
       }

@@ -64,7 +64,7 @@ const Home = () => {
     navigate("/account/documents");
   };
   const handleSwitch = async () => {
-    if (state.account?.address) {
+    if (account) {
       if (Testnet.chainId !== chainId) {
         try {
           await switchNetwork(Testnet.chainId);
@@ -88,6 +88,9 @@ const Home = () => {
             } catch (e: any) {
               console.log(e.message);
             }
+          }
+          else if (e.code === 1013) {
+            console.log("qwertyuiop")
           }
         }
         navigate("/account/documents");
@@ -172,7 +175,7 @@ const Home = () => {
                     }}
                     onClick={() => navigate("/account/documents/new")}
                   >
-                    Create Document
+                    Upload Document
                   </Button>
                 </>
               )}
@@ -237,14 +240,14 @@ const Home = () => {
                 Looking for something?
               </Typography>
               <Typography sx={{ color: "#fff" }}>
-                search for documents using unique reference ID
+                search for public documents
               </Typography>
 
               <Input
                 type="search"
                 onChange={handleChange}
                 name="search"
-                placeholder="Enter reference ID"
+                placeholder="Enter search term"
                 sx={{
                   display: "flex",
                   width: { xs: "90%", sm: "90%" },
