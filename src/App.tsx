@@ -22,6 +22,7 @@ import { theme } from "./theme";
 import { Testnet } from "./ChainConfig";
 import { SigningInvitation } from "./pages/Account/Invitations/Sign";
 import { ViewInvitation } from "./pages/Account/Invitations/View";
+import { AppConfig } from "./Config";
 
 const SnackbarParent = SnackbarProvider as any;
 
@@ -118,7 +119,9 @@ function AppRoutes() {
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Outlet />
+      <AppConfig>
+        <Outlet />
+      </AppConfig>
     </ThemeProvider>
   );
 }
