@@ -9,7 +9,6 @@ export const useAuth = () => {
     const { library } = useEthers();
     const { mutate } = useMutation(POST_AUTH, {
         onSuccess(data: any) {
-            console.log(data);
             if (!updateState) return;
 
             updateState({ authToken: data.token });

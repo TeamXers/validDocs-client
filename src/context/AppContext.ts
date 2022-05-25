@@ -14,6 +14,15 @@ export interface IAppState {
   walletConnected: boolean;
 
   walletAddress?: string | null;
+
+  /**
+   * Indicates if state has been hydrated
+   */
+  ready: boolean;
+}
+
+export const INITIAL_STATE = {
+  walletConnected: false, ready: false
 }
 
 interface IAppContext {
@@ -22,5 +31,5 @@ interface IAppContext {
 }
 
 export const AppContext = createContext<IAppContext>({
-  state: { walletConnected: false },
+  state: INITIAL_STATE,
 });
