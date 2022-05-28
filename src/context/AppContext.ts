@@ -17,6 +17,9 @@ export interface IAppState {
 
   /**
    * Indicates if state has been hydrated
+   * and account has been initialized
+   * the values of the state should not be used
+   * until is true
    */
   ready: boolean;
 }
