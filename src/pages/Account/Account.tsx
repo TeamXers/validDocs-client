@@ -16,18 +16,28 @@ export const Account = () => {
   const [showSetup, setShowSetup] = useState(false);
 
   useEffect(() => {
-    if (state.account || !state.walletConnected) return;
+    if (
+      state.authToken || !state.ready || !state.authToken || !state.walletConnected
+    ) {
+      setShowSetup(false);
+      return;
+    }
+    let isMounted = true;
 
     (async () => {
       if (!state.walletConnected) {
         await activateBrowserWallet();
       }
 
+      if (!isMounted) return;
+
       setShowSetup(true);
       enqueueSnackbar("Set your display name", {
         variant: "info",
       });
     })();
+
+    return () => { isMounted = false; };
   }, [state, activateBrowserWallet, location, setShowSetup]);
 
   return (
