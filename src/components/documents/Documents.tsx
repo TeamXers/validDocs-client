@@ -18,7 +18,7 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
     const { state } = useAppState();
     const transitions = useTransition(isLoading, {
         enter: { opacity: 1, position: "relative" },
-        leave: { opacity: 0, position: "absolute", width: "100%" },
+        leave: { opacity: 0, position: "absolute" },
     });
 
     return <Box { ...boxProps }>
@@ -97,10 +97,6 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
 
 const Loader: React.FC<SkeletonProps> = (props) => (
     <>
-        <Skeleton {...props} />
-        <Skeleton {...props} />
-        <Skeleton {...props} />
-        <Skeleton {...props} />
         <Skeleton {...props} />
         <Skeleton {...props} />
         <Skeleton {...props} />
