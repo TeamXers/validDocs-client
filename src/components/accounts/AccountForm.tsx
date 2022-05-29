@@ -40,8 +40,15 @@ export const SlidingAccountForm: React.FC<SlidingAccountFormProps> = ({ open, on
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
         <Slide direction='up' in={open}>
-            <Box bgcolor='white' borderRadius={'5% 5% 0% 0%'} onClick={(e) => { e.stopPropagation(); }}
-                position='absolute' pt={10} px={2} top={'50%'} left={0} right={0} bottom={0}>
+            <Box bgcolor='white'
+                borderRadius={'20px 20px 0 0'}
+                onClick={(e) => { e.stopPropagation(); }}
+                position='absolute'
+                pt={10}
+                top={'50%'} bottom={0}
+                boxSizing={'border-box'}
+                width={'100%'} maxWidth={'1000px'}
+                sx={{ px: { xs: 2, md: 4 } }}>
                 <Box sx={{ maxWidth: "50rem" }}>
                     <Typography variant='h4' sx={{ mb: 4 }}>Update your display name</Typography>
 

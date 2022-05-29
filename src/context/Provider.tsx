@@ -1,8 +1,8 @@
 import { useCallback, useContext, useState } from "react";
-import { AppContext, IAppState } from "./AppContext";
+import { AppContext, IAppState, INITIAL_STATE } from "./AppContext";
 
 export const StateProvider: React.FC = ({ children }) => {
-  const [state, setState] = useState<IAppState>({ walletConnected: false });
+  const [state, setState] = useState<IAppState>(INITIAL_STATE);
   const updateState = useCallback(
     (change: Partial<IAppState>) => {
       setState((s) => ({ ...s, ...change }));

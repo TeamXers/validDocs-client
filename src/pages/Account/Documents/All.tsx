@@ -9,15 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { useQuery } from "react-query";
-import { useSnackbar } from "notistack";
 import { AppBreadcrumbs } from "../../../components/Breadcrumbs";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
-import { GET_DOCUMENTS } from "../../../api/validdocs";
-import { useAppState } from "../../../context/Provider";
 import { Documents } from "../../../components/documents/Documents";
 import { TabPanel } from "../../../components/TabPanel";
+import { SharedDocuments } from "./SharedDocuments";
+import { YourDocuments } from "./YourDocuments";
 
 function a11yProps(index: number) {
   return {
@@ -27,20 +25,6 @@ function a11yProps(index: number) {
 }
 
 export const AllDocuments = () => {
-  const { enqueueSnackbar } = useSnackbar();
-  const { state } = useAppState();
-  const { data, isFetching } = useQuery(
-    ["Docs", { authorAddress: state.walletAddress }],
-    GET_DOCUMENTS as any,
-    {
-      initialData: [] as any[],
-      enabled: Boolean(state.walletAddress),
-      retry: 3,
-      onError: (error: any) => {
-        enqueueSnackbar(error.message, { variant: "error" });
-      },
-    }
-  );
   const [tab, settab] = useState(0);
 
   const handleChangeTab = (event: React.SyntheticEvent, newtab: number) => {
@@ -80,13 +64,13 @@ export const AllDocuments = () => {
           </Box>
 
           <TabPanel value={tab} index={0}>
-            <Documents isLoading={isFetching} documents={data ?? []} />
+            <YourDocuments />
           </TabPanel>
           <TabPanel value={tab} index={1}>
-            <Documents isLoading={isFetching} documents={data ?? []} />
+            <SharedDocuments />
           </TabPanel>
           <TabPanel value={tab} index={2}>
-            <Documents isLoading={isFetching} documents={data ?? []} />
+            <Documents isLoading={true} documents={[]} />
           </TabPanel>
         </Box>
       </Container>
