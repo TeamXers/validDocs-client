@@ -23,7 +23,7 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
 
     return <Box { ...boxProps }>
         {transitions((style: any, loading: any) => (
-            <animated.div key={`${loading}`} style={style}>
+            <animated.div key={`${loading}`} style={{ ...style, minHeight: 300 }}>
                 <Stack
                     alignItems={"center"}
                     direction={{ xs: "column", sm: "row" }}
@@ -83,7 +83,7 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
                                     </ButtonBase>
                                 ))
                             ) : (
-                                <Typography align="center" sx={{ mt: 4, mx: "auto" }}>
+                                <Typography align="center" sx={{ mt: 20, mx: "auto" }}>
                                     No documents to display
                                 </Typography>
                             )}
