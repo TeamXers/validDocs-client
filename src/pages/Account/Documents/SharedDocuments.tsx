@@ -19,5 +19,5 @@ export const SharedDocuments = () => {
         }
     );
 
-    return <Documents isLoading={isFetching} documents={data ?? []} />;
+    return <Documents isLoading={isFetching || !state.walletConnected} documents={data ?? []} />;
 }
