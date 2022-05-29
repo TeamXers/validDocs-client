@@ -1,7 +1,7 @@
 import { Box, Button, Skeleton, Typography } from "@mui/material"
 import { useMemo, useState } from "react"
 import { useQuery } from "react-query"
-import { GET_DOCUMENTS } from "../../api/validdocs"
+import { GET_DOCUMENTS, GET_PUBLIC_DOCUMENTS } from "../../api/validdocs"
 import { Documents } from "../documents/Documents"
 import { SlidingAccountForm } from "./AccountForm"
 import { UserAvatar } from "./UserAvatar"
@@ -14,14 +14,12 @@ interface UserProfileProps {
 export const UserProfile: React.FC<UserProfileProps> = ({ account, editable }) => {
     const [showForm, setShowForm] = useState(false);
     const query = useMemo(
-        () => ({
-            authorAddress: account?.address,
-            ...(editable ? {} : { isPublic: true })
-        }),
-        [account, editable]
+        () => ({ authorAddress: account?.address }),
+        [account]
     );
     const { data: documents, isFetching: documentFetching } = useQuery(
-        ['documents', query], GET_DOCUMENTS,
+        ['documents', query],
+        editable ? GET_DOCUMENTS : GET_PUBLIC_DOCUMENTS,
         { enabled: !!account?.address, placeholderData: [] as any });
 
     return <Box>
