@@ -17,11 +17,12 @@ interface DocumentsProps {
 export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ documents, isLoading, ...boxProps }) => {
     const { state } = useAppState();
     const transitions = useTransition(isLoading, {
+        from: { opacity: 0 },
         enter: { opacity: 1, position: "relative" },
-        leave: { opacity: 0, position: "absolute" },
+        leave: { opacity: 0, position: "absolute", inset: 0 },
     });
 
-    return <Box { ...boxProps }>
+    return <Box position='relative' { ...boxProps }>
         {transitions((style: any, loading: any) => (
             <animated.div key={`${loading}`} style={{ ...style, minHeight: 300 }}>
                 <Stack
