@@ -1,4 +1,5 @@
-import { Stack, Container, Typography, Skeleton } from "@mui/material";
+import { Stack, Container, Typography } from "@mui/material";
+import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { AppBreadcrumbs } from "../../components/Breadcrumbs";
@@ -26,7 +27,7 @@ export const CurrentUserProfile: React.FC = () => {
           Your Profile
         </Typography>
 
-        {state.account && <UserProfile account={state.account} editable />}
+        <UserProfile account={state.account} editable />
       </Container>
 
       <Footer />
@@ -36,8 +37,10 @@ export const CurrentUserProfile: React.FC = () => {
 
 export const Profile: React.FC = () => {
   const { address } = useParams();
-  const { data, isFetching } = useQuery(
-    ['accounts', { address }], GET_ACCOUNT,
+  const { state } = useAppState();
+  const query = useMemo(() => ({ address }), [address, state.authToken]);
+  const { data } = useQuery(
+    ['accounts', query], GET_ACCOUNT,
     { enabled: !!address, placeholderData: [] as any }
   );
 
@@ -55,11 +58,7 @@ export const Profile: React.FC = () => {
           User Profile
         </Typography>
 
-        {data[0] && <UserProfile account={data[0]} />}
-        {isFetching && <Stack>
-            <Skeleton sx={{ height: 150 }} />
-            <Skeleton sx={{ height: 400 }} />
-          </Stack>}
+        <UserProfile account={data[0]} />
       </Container>
 
       <Footer />

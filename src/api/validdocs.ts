@@ -20,6 +20,7 @@ validDocsApi.interceptors.response.use(
 );
 
 const routes = {
+  auth: "/auth",
   account: "/accounts",
   docs: "/docs",
   viewers: "/docs/viewers",
@@ -27,6 +28,22 @@ const routes = {
   pinata: "/pinata",
   invitations: "/invites",
 };
+
+export interface IAuthData {
+  /**
+   * Signature obtained from Metamask
+   */
+  signature: string
+
+  /**
+   * Signed message
+   */
+  message: string
+}
+
+export const POST_AUTH = (data: IAuthData) => { 
+  return validDocsApi.post(routes.auth, data);
+}
 
 export const GET_ACCOUNT = (query: any) => {
   return validDocsApi.get(routes.account, { params: query.queryKey[1] });
@@ -55,6 +72,16 @@ export const SET_USERNAME = async (data: {
 
 export const GET_DOCUMENTS = (query: any) => {
   return validDocsApi.get(routes.docs, {
+    params: query.queryKey[1],
+  });
+};
+
+export const GET_SHARED_DOCUMENTS = () => {
+  return validDocsApi.get(`${routes.docs}/shared`);
+};
+
+export const GET_PUBLIC_DOCUMENTS = (query: any) => {
+  return validDocsApi.get(`${routes.docs}/public`, {
     params: query.queryKey[1],
   });
 };

@@ -24,9 +24,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { useQuery } from "react-query";
 import { useAppState } from "../context/Provider";
-import { GET_ACCOUNT } from "../api/validdocs";
 import { utils } from "ethers";
 import { Testnet } from "../ChainConfig";
 
@@ -57,36 +55,6 @@ const Header = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
-  useQuery(["account", { address: account }], GET_ACCOUNT as any, {
-    enabled: Boolean(account),
-    onError: (error: any) => {
-      if (error.code === 1013) {
-        console.log("tre");
-      }
-      // else {
-      //   enqueueSnackbar(error.message, { variant: "error" });
-      // }
-      console.log("utopia");
-    },
-    onSuccess: (data: any) => {
-      if (!updateState) {
-        throw new Error("updateState is undefined!");
-      }
-      updateState({
-        account: data[0],
-        walletConnected: true,
-        walletAddress: account,
-      });
-    },
-  });
-
-  useEffect(() => {
-    if (!updateState || active) return;
-    if (!state.walletConnected) return;
-
-    updateState({ walletConnected: false, walletAddress: undefined });
-  }, [active, state, updateState]);
 
   useEffect(() => {
     if (error) {
@@ -392,7 +360,7 @@ const Header = () => {
           onClose={() => setMenuAnchor(null)}
         >
           <MenuItem disabled>
-            {state.account?.username || "No username"}
+            {state.account?.username || "No display name"}
           </MenuItem>
           <Divider />
           <MenuItem component={RouterLink} to="/account/documents">
