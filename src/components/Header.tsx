@@ -93,7 +93,7 @@ const Header = () => {
       if ( error.message.includes(`"code": 1013`)) {
         console.log("dfghjmk,l.kjmhg")
         console.log(error.message)
-           activateBrowserWallet();
+       
       } 
       else {
         enqueueSnackbar(error.message, { variant: "error" });
