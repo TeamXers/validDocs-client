@@ -12,6 +12,26 @@ import SearchIcon from "@mui/icons-material/Search";
 import IpfsLogo from "../assets/ipfs.svg";
 import HarmonyLogo from "../assets/harmony.svg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { IField } from "./forms/Fields";
+import { Form } from "./forms/Form"
+import * as yup from "yup";
+
+
+
+
+const FIELDS : IField[] = [
+  {
+name:"email",
+initialValue:"",
+    placeholder:"Your email",
+  validator: yup.string().email("Please enter a valid email").required("Please enter your email address"),
+    customStyle: {
+      width: { xs: "100%", md: "250px" },
+      backgroundColor: "#fff",
+      borderRadius: "10px",
+}
+}
+]
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -202,7 +222,21 @@ const Footer = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Input
+                  <Form fields={FIELDS} onSubmit={()=>{}} className="suscribe-email" >
+                    <Button
+                      variant="contained"
+                      sx={{
+                        margin: { xs: "1rem 0 0 0", md: "0 0 0 1rem" },
+                        backgroundColor: "rgb(0, 191, 173)",
+                        borderRadius: "10px",
+                        padding: ".7rem 2rem",
+                      }}
+                      type="submit"
+                    >
+                      SUBMIT
+                    </Button>
+                  </Form>
+                  {/* <Input
                     placeholder="Your email"
                     name="mailList"
                     disableUnderline={true}
@@ -212,18 +246,8 @@ const Footer = () => {
                       backgroundColor: "#fff",
                       borderRadius: "10px",
                     }}
-                  />
-                  <Button
-                    variant="contained"
-                    sx={{
-                      margin: { xs: "1rem 0 0 0", md: "0 0 0 1rem" },
-                      backgroundColor: "rgb(0, 191, 173)",
-                      borderRadius: "10px",
-                      padding: ".7rem 2rem",
-                    }}
-                  >
-                    SUBMIT
-                  </Button>
+                  /> */}
+               
                 </Box>
               </Box>
             </Box>

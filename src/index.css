@@ -11,7 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.suscribe-email{
+  display:flex;
+  align-items:center;
+flex-direction: column;
+}
 .search-input {
   width: 100%;
   outline: none;
@@ -145,5 +149,11 @@ code {
 @media (max-width: 768px) {
   .footer-search {
     padding-left: 25px !important;
+  }
+}
+
+@media (min-width:993px){
+  .suscribe-email{
+    flex-direction: row;
   }
 }

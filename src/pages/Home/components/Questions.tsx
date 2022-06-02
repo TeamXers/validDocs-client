@@ -1,21 +1,11 @@
 import { useState } from "react";
 import {
     Box,
-    ButtonBase,
-    Stack,
     Typography,
-    Skeleton as MuiSkeleton,
-    SkeletonProps,
-    Button,
-    Container,
-    Avatar,
     Accordion,
     AccordionSummary,
     AccordionDetails,
 } from "@mui/material";
-import MuiAccordionSummary, {
-    AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 
@@ -89,24 +79,6 @@ const Questions = () => {
     )
 };
 
-// const AccordionSummary = styled((props: AccordionSummaryProps) => (
-//     <MuiAccordionSummary
-//         expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-//         {...props}
-//     />
-// ))(({ theme }) => ({
-//     backgroundColor:
-//         theme.palette.mode === 'dark'
-//             ? 'rgba(255, 255, 255, .05)'
-//             : 'rgba(0, 0, 0, .03)',
-//     flexDirection: 'row-reverse',
-//     '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-//         transform: 'rotate(90deg)',
-//     },
-//     '& .MuiAccordionSummary-content': {
-//         marginLeft: theme.spacing(1),
-//     },
-// }));
 
 
 export default Questions
