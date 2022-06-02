@@ -205,6 +205,7 @@ const Footer = () => {
                   <Input
                     placeholder="Your email"
                     name="mailList"
+                    disableUnderline={true}
                     sx={{
                       width: { xs: "100%", md: "250px" },
                       padding: ".5rem 1rem",
