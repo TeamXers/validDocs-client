@@ -13,7 +13,8 @@ export interface IField {
   endAdornment?: React.ReactNode;
   initialValue?: any;
   validator?: yup.AnySchema;
-  customStyle?: any
+  customStyle?: any;
+  customErrorStyle?:any
 }
 
 export interface IFieldsProps {
@@ -23,10 +24,11 @@ export interface IFieldsProps {
 export const Fields: React.FC<IFieldsProps> = ({ fields }) => {
   const { errors, values, handleChange, handleBlur } = useFormikContext<any>();
   const DEFAULT_STYLE = { mt: 2, mb: 1, width: "100%" }
+  const DEFAULT_ERROR_STYLE = {mb: 2, width: "100%"}
   return (
     <>
       {fields.map((field) => (
-        <Box key={field.name}>
+        <Box key={field.name} sx={{position:"relative"}}>
           {(
             {
               amount: (
@@ -56,7 +58,7 @@ export const Fields: React.FC<IFieldsProps> = ({ fields }) => {
             />
           )}
 
-          <FormHelperText sx={{ mb: 2, width: "100%" }} error>
+          <FormHelperText sx={{...DEFAULT_ERROR_STYLE, ...field.customErrorStyle}} error>
             {errors[field.name]}
           </FormHelperText>
         </Box>

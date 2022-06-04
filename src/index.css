@@ -13,7 +13,7 @@ code {
 }
 .suscribe-email{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
 flex-direction: column;
 }
 .search-input {
@@ -146,14 +146,11 @@ flex-direction: column;
 .footer-search {
   padding-left: 0px !important;
 }
-@media (max-width: 768px) {
-  .footer-search {
-    padding-left: 25px !important;
-  }
-}
 
-@media (min-width:993px){
+
+@media (min-width:1024px){
   .suscribe-email{
     flex-direction: row;
+     align-items:center;
   }
 }

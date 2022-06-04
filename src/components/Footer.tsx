@@ -11,7 +11,7 @@ import Logo from "../assets/Black_and_White_Logo_Symbol_only_Transparent.png";
 import SearchIcon from "@mui/icons-material/Search";
 import IpfsLogo from "../assets/ipfs.svg";
 import HarmonyLogo from "../assets/harmony.svg";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useLocation, useParams } from "react-router-dom";
 import { IField } from "./forms/Fields";
 import { Form } from "./forms/Form"
 import * as yup from "yup";
@@ -29,11 +29,14 @@ initialValue:"",
       width: { xs: "100%", md: "250px" },
       backgroundColor: "#fff",
       borderRadius: "10px",
-}
+},
+customErrorStyle:{position:"absolute", bottom:"-2rem", left:0 }
 }
 ]
 
 const Footer = () => {
+  const {term} = useParams()
+  const location = useLocation()
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const getYear = (): number => {
@@ -43,7 +46,8 @@ const Footer = () => {
   return (
     <>
       <footer>
-        <Box
+       {
+        location.pathname === "/" || location.pathname === "/about-us" || location.pathname === `/search/${term}`  ? ( <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
@@ -77,7 +81,9 @@ const Footer = () => {
               ":hover": { opacity: "1" },
             }}
           />
-        </Box>
+        </Box>)
+      : ""  
+      }
         <Box sx={{ padding: "1rem", margin: "0", backgroundColor: "#009688" }}>
           <Container>
             <Box
@@ -87,18 +93,18 @@ const Footer = () => {
                 columnGap: "1.5rem",
                 gridTemplateColumns: {
                   xs: `repeat(${1}, ${1}fr)`,
-                  md: `repeat(${3}, ${1}fr)`,
+                  lg: `repeat(${3}, ${1}fr)`,
                 },
                 margin: "4rem 0",
-                flexDirection: { xs: "column", md: "row" },
+                flexDirection: { xs: "column", lg: "row" },
               }}
             >
               <Box
                 sx={{
                   width: "100%",
                   color: "#fff",
-                  textAlign: { xs: "center", md: "left" },
-                  justifyContent: { xs: "center", md: "flex-start" },
+                  textAlign:"left",
+                  justifyContent: "flex-start",
                 }}
               >
                 <Box
@@ -106,7 +112,7 @@ const Footer = () => {
                     display: "flex",
                     alignItems: "center",
                     margin: "0 0 1rem 0",
-                    justifyContent: { xs: "center", md: "flex-start" },
+                    justifyContent: "flex-start",
                   }}
                 >
                   <img
@@ -142,8 +148,8 @@ const Footer = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: { xs: "center", md: "flex-start" },
-                  margin: { xs: "2rem 0 0 0", md: "0" },
+                  alignItems: "flex-start",
+                  margin: { xs: "2rem 0 0 0", lg: "0" },
                 }}
               >
                 <Typography
@@ -160,8 +166,10 @@ const Footer = () => {
                     textTransform: "none",
                     paddingLeft: 0,
                   }}
-                  component={RouterLink}
-                  to="#"
+                  component={"a"}
+                  href="mailto:support@validdocs.com"
+                  rel="noreferrer"
+                  target="_blank"
                 >
                   Support
                 </Button>
@@ -175,7 +183,7 @@ const Footer = () => {
                     paddingLeft: 0,
                   }}
                   component={RouterLink}
-                  to="#"
+                  to="/about-us"
                 >
                   About Us
                 </Button>
@@ -204,7 +212,7 @@ const Footer = () => {
                 sx={{
                   color: "#fff",
                   margin: { xs: "2rem 0 0 0", md: "0" },
-                  textAlign: { xs: "center", md: "left" },
+                  textAlign: "left",
                 }}
               >
                 <Typography variant="h6" sx={{ margin: "0 0 1rem 0" }}>
@@ -219,14 +227,14 @@ const Footer = () => {
                     display: "flex",
                     flexDirection: { xs: "column", md: "row" },
                     margin: "1.5rem 0",
-                    alignItems: "center",
+                    alignItems: {xs:"flex-start", lg:"center"},
                   }}
                 >
                   <Form fields={FIELDS} onSubmit={()=>{}} className="suscribe-email" >
                     <Button
                       variant="contained"
                       sx={{
-                        margin: { xs: "1rem 0 0 0", md: "0 0 0 1rem" },
+                        margin: { xs: "1rem 0 0 0", lg: "0 0 0 1rem" },
                         backgroundColor: "rgb(0, 191, 173)",
                         borderRadius: "10px",
                         padding: ".7rem 2rem",
@@ -236,17 +244,7 @@ const Footer = () => {
                       SUBMIT
                     </Button>
                   </Form>
-                  {/* <Input
-                    placeholder="Your email"
-                    name="mailList"
-                    disableUnderline={true}
-                    sx={{
-                      width: { xs: "100%", md: "250px" },
-                      padding: ".5rem 1rem",
-                      backgroundColor: "#fff",
-                      borderRadius: "10px",
-                    }}
-                  /> */}
+         
                
                 </Box>
               </Box>

@@ -698,7 +698,7 @@ const Home = () => {
      
      
       <Container>
-        <Box sx={{ margin: { xs: "3rem 0", md: "6rem 0" } }}>
+        <Box sx={{ margin: { xs: "6rem 0 3rem 0", md: "12rem 0 6rem 0" } }}>
           <Typography
             variant="h2"
             sx={{
@@ -721,8 +721,6 @@ const Home = () => {
           </Typography>
 
           <Box
-            
-
             sx={{
               display: "grid",
               gridTemplateColumns: {
@@ -826,10 +824,7 @@ const Home = () => {
               </Button>
             </Box>
             <Box
-              /* Grid
-              item
-              xs={12}
-              md={4} */
+             
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -1073,11 +1068,13 @@ const Home = () => {
           </Box>
         </Container>
       </Box>
-      <Container>
+      <Container sx={{margin: { xs: "0 auto 3rem auto", md: "0 auto 6rem auto" }}}>
 <Box>
   <Typography
             variant="h2"
-            sx={{ textAlign: "center", fontWeight: 600, color: "#252525" }}>
+            sx={{
+              textAlign: "center", fontWeight: 600, color: "#252525", fontSize: "38px !important",
+              lineHeight: "38.5px", }}>
             Questions{"?"} <Box component="span" sx={{ color:"#009688" }}>Answers</Box>
     </Typography>
     <Typography
