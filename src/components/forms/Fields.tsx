@@ -1,16 +1,20 @@
-import { FormHelperText, TextField, TextFieldProps } from "@mui/material";
-import { Fragment, HTMLInputTypeAttribute } from "react";
+import { FormHelperText, TextField, TextFieldProps,Box } from "@mui/material";
+import {  HTMLInputTypeAttribute } from "react";
 import { useFormikContext } from "formik";
 import * as yup from "yup";
 
 export interface IField {
-  label: string;
+
   name: string;
+  label?: string;
+  placeholder?:string;
   type?: HTMLInputTypeAttribute | "amount";
   multiline?: boolean;
   endAdornment?: React.ReactNode;
   initialValue?: any;
   validator?: yup.AnySchema;
+  customStyle?: any;
+  customErrorStyle?:any
 }
 
 export interface IFieldsProps {
@@ -19,11 +23,12 @@ export interface IFieldsProps {
 
 export const Fields: React.FC<IFieldsProps> = ({ fields }) => {
   const { errors, values, handleChange, handleBlur } = useFormikContext<any>();
-
+  const DEFAULT_STYLE = { mt: 2, mb: 1, width: "100%" }
+  const DEFAULT_ERROR_STYLE = {mb: 2, width: "100%"}
   return (
     <>
       {fields.map((field) => (
-        <Fragment key={field.name}>
+        <Box key={field.name} sx={{position:"relative"}}>
           {(
             {
               amount: (
@@ -35,26 +40,28 @@ export const Fields: React.FC<IFieldsProps> = ({ fields }) => {
               ),
             } as any
           )[field.type ?? "any"] ?? (
-            <TextField
-              name={field.name}
-              label={field.label}
-              value={values[field.name]}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              type={field.type}
-              multiline={field.multiline}
-              rows={4}
-              InputProps={{
-                endAdornment: field.endAdornment,
-              }}
-              sx={{ mt: 2, mb: 1, width: "100%" }}
+              <TextField
+                name={field.name}
+                label={field.label}
+                value={values[field.name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                type={field.type}
+                multiline={field.multiline}
+                rows={4}
+                placeholder={field.placeholder}
+                InputProps={{
+                  endAdornment: field.endAdornment,
+                }}
+                sx={{...DEFAULT_STYLE, ...field.customStyle}}
+
             />
           )}
 
-          <FormHelperText sx={{ mb: 2, width: "100%" }} error>
+          <FormHelperText sx={{...DEFAULT_ERROR_STYLE, ...field.customErrorStyle}} error>
             {errors[field.name]}
           </FormHelperText>
-        </Fragment>
+        </Box>
       ))}
     </>
   );

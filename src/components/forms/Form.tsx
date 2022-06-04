@@ -8,6 +8,7 @@ import { Fields, IFieldsProps } from "./Fields";
 export interface FormProps<T = any> extends IFieldsProps {
   onSubmit: (values: T) => Promise<void> | void;
   showSnackbar?: boolean;
+  className?:string
 }
 
 export const Form: React.FC<FormProps> = ({
@@ -15,6 +16,7 @@ export const Form: React.FC<FormProps> = ({
   onSubmit,
   children,
   showSnackbar,
+  className
 }) => {
   const initialValues = useMemo(
     () =>
@@ -47,7 +49,7 @@ export const Form: React.FC<FormProps> = ({
         }
       }}
     >
-      <FormikForm>
+      <FormikForm className={className}>
         <Fields fields={fields} />
         {children}
       </FormikForm>
