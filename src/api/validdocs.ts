@@ -80,6 +80,10 @@ export const GET_SHARED_DOCUMENTS = () => {
   return validDocsApi.get(`${routes.docs}/shared`);
 };
 
+export const GET_RECENTLY_VIEWED_DOCUMENTS = () => {
+  return validDocsApi.get(`${routes.docs}/recently-viewed`);
+};
+
 export const GET_PUBLIC_DOCUMENTS = (query: any) => {
   return validDocsApi.get(`${routes.docs}/public`, {
     params: query.queryKey[1],
