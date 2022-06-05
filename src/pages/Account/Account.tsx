@@ -14,7 +14,7 @@ export const Account = () => {
 
   useEffect(() => {
     if (
-      state.authToken || !state.ready || !state.authToken || !state.walletConnected
+      state.account || !state.ready || !state.authToken || !state.walletConnected
     ) {
       setShowSetup(false);
       return;
