@@ -8,11 +8,11 @@ export const RecentlyViewedDocuments = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { state } = useAppState();
     const { data, isFetching } = useQuery(
-        ["Docs", "recently-viewed"],
+        ["Docs", "recently-viewed", state.authToken],
         GET_RECENTLY_VIEWED_DOCUMENTS as any,
         {
             initialData: [] as any[],
-            enabled: Boolean(state.walletAddress),
+            enabled: Boolean(state.authToken),
             retry: 3,
             onError: (error: any) => {
                 enqueueSnackbar(error.message, { variant: "error" });
