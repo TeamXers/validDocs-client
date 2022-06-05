@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 
 const key = "VDocs_STATE";
 export const useHydrateState = (state: any) => {
-    const [hydrated, setHydrated] = useState(false);
+    const hydrated = useRef(false);
     useEffect(() => {
-        if (!hydrated) return;
+        if (!state.ready) return;
         localStorage.setItem(key, JSON.stringify(state));
-    }, [state, hydrated]);
+    }, [state]);
 
     const hydrate = useCallback(() => {
         const str = localStorage.getItem(key);
-        setHydrated(true);
+        hydrated.current =  true;
         if (!str) return null;
         return JSON.parse(str);
     }, []);
 
-    return { hydrate, hydrated };
+    return { hydrate, hydrated: hydrated.current };
 }

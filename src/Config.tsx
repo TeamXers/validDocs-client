@@ -11,14 +11,32 @@ export const AppConfig: React.FC = ({ children }) => {
     const authenticate = useAuth();
     const { hydrate, hydrated } = useHydrateState(state);
     const { account } = useEthers();
-    useInitAccount();
+    const initAccount = useInitAccount();
 
     useEffect(() => {
+        if (!state.walletConnected) return;
+        if (!updateState) return;
         if (hydrated) return;
+
         const saved = hydrate();
-        if (saved && updateState)
-            updateState({ authToken: saved.authToken });
-    }, [updateState, hydrated]);
+
+        (async () => {
+            let token = saved?.authToken;
+            if (!token) {
+                token = await authenticate();
+            }
+
+            validDocsApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+            initAccount((account) => {
+                updateState({
+                    account,
+                    authToken: token,
+                    ready: true
+                });
+            });
+        })();
+    }, [updateState, state.walletConnected]);
 
     useEffect(() => {
         if (!updateState) return;
@@ -32,14 +50,15 @@ export const AppConfig: React.FC = ({ children }) => {
     useEffect(() => {
         if (state.authToken || !state.ready) return;
         if (!state.walletConnected) return;
-        authenticate();
-    }, [authenticate, state.walletConnected, state.authToken, state.ready]);
+        if (!updateState) return;
 
-    useEffect(() => {
-        validDocsApi.defaults.headers.common["Authorization"] = state.authToken
-            ? `Bearer ${state.authToken}`
-            : "";
-    }, [state.authToken]);
+        (async () => {
+            const token = await authenticate();
+            validDocsApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            initAccount((account) => updateState({ authToken: token, account }));
+        })();
+    }, [authenticate, state.walletConnected, state.authToken, state.ready, updateState]);
+
 
     return <>{children}</>
 }
