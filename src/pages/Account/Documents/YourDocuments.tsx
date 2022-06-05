@@ -9,7 +9,7 @@ export const YourDocuments = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { state } = useAppState();
     const query = useMemo(
-        () => ({ authorAddress: state.walletAddress }),
+        () => ({ authorAddress: state.account?.address }),
         [state.walletAddress, state.authToken]
     );
     const { data, isFetching } = useQuery(
