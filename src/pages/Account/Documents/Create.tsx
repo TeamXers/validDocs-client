@@ -76,7 +76,7 @@ export const CreateDocument = () => {
     async (values: any) => {
       saveDoc({
         ...values, isPublic: values.isPublic?.[0] === 'on' ? true : false,
-        authorAddress: state.walletAddress
+        authorAddress: state.account?.address
       });
     },
     [saveDoc, state]
