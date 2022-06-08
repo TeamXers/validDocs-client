@@ -14,8 +14,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListItemButton,
-  Avatar,
+ 
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SearchIcon from "@mui/icons-material/Search";
@@ -146,7 +145,7 @@ const Home = () => {
                 fontWeight: "300",
               }}
             >
-              Validdocs allows you Store, sign, manage, and verify documents using the Harmony blockchain and IPFS.
+              Validdocs allows you store, sign, manage, and verify documents using the Harmony blockchain and IPFS.
               <br />
             </Typography>
             <Box
