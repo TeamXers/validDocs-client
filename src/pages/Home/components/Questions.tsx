@@ -13,7 +13,7 @@ const IpfsLink =  <a href='https://ipfs.io/' target='_blank' >https://ipfs.io/</
 const Questions = () => {
     const [expanded, setExpanded] = useState<string | boolean>(false);
     const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false);
+        setExpanded(newExpanded ? panel : false);
     };
     const data = [
         {
@@ -38,11 +38,11 @@ const Questions = () => {
         }
     ]
     return (
-    <>
-         <Box>
-              {
-                  data.map(
-                      (item)=>(
+        <>
+            <Box>
+                {
+                    data.map(
+                        (item, index) => (
                             <Accordion
                     expanded={expanded === true || expanded === item.panelNum}
                     onChange={handleChange(item.panelNum)}
