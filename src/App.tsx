@@ -24,6 +24,8 @@ import { Testnet } from "./ChainConfig";
 import { SigningInvitation } from "./pages/Account/Invitations/Sign";
 import { ViewInvitation } from "./pages/Account/Invitations/View";
 import { AppConfig } from "./Config";
+import ScrollToTop from "./components/ScrollToTop";
+import TeamValid from "./pages/TeamValid";
 
 const SnackbarParent = SnackbarProvider as any;
 
@@ -46,10 +48,12 @@ function AppRoutes() {
         <SnackbarParent maxSnack={3}>
           <StateProvider>
             <BrowserRouter>
+            <ScrollToTop />
               <Routes>
                 <Route path="/" element={<App />}>
                   <Route index element={<Home />} />
 <Route path="about-us" element={<About />} />
+<Route path="team_valid" element={<TeamValid />} />
                   <Route path="account" element={<Account />}>
                     <Route index element={<AllDocuments />} />
                     <Route path="profile" element={<CurrentUserProfile />} />

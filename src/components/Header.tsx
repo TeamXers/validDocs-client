@@ -16,6 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Logo from "../assets/Black_and_White_Logo_Symbol_only_Transparent.png";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useSnackbar } from "notistack";
 import { useEthers } from "@usedapp/core";
 import {
@@ -58,11 +60,11 @@ const Header = () => {
 
   useEffect(() => {
     if (error) {
-      if ( error.message.includes(`"code": 1013`)) {
+      if (error.message.includes(`"code": 1013`)) {
         console.log("dfghjmk,l.kjmhg")
         console.log(error.message)
-       
-      } 
+
+      }
       else {
         enqueueSnackbar(error.message, { variant: "error" });
         console.log("ut2", error);
@@ -82,7 +84,7 @@ const Header = () => {
           await switchNetwork(Testnet.chainId);
           await activateBrowserWallet();
         } catch (e: any) {
-      
+
           if (e.code === 4902) {
             try {
               await library?.send("wallet_addEthereumChain", [
@@ -102,9 +104,9 @@ const Header = () => {
               console.log(e.message);
             }
           }
-            else if(e.code === 1013){
-           console.log("qwertyuiop")
-         }
+          else if (e.code === 1013) {
+            console.log("qwertyuiop")
+          }
         }
         navigate("/account/documents");
       }
@@ -132,6 +134,42 @@ const Header = () => {
 
     navigate(`/search/${searchTerm}`);
   };
+
+  const HOVER_STYLE = (path: string) => {
+    if (location.pathname === path) {
+      return {
+        ":after": {
+          content: '""',
+          width: "40px",
+          height: "3px",
+          position: "absolute",
+          bottom: 0,
+          left: "50%",
+          backgroundColor: "#fff",
+          borderRadius: "20px",
+          transform: `translate(-${50}%, ${0}rem)`
+        }
+      }
+    }
+    else {
+      return {
+        ":hover": {
+          ":after": {
+            content: '""',
+            width: "40px",
+            height: "3px",
+            position: "absolute",
+            bottom: 0,
+            left: "50%",
+            backgroundColor: "#fff",
+            borderRadius: "20px",
+            transform: `translate(-${50}%, ${0}rem)`
+          }
+        }
+      }
+    }
+
+  }
 
   return (
     <>
@@ -170,19 +208,42 @@ const Header = () => {
                 width: "100%",
               }}
             >
-              {location.pathname !== "/" ? (
-                <Button
-                  color="inherit"
-                  sx={{ mr: 4, color: "inherit" }}
-                  component={RouterLink}
-                  to="/"
-                >
-                  Home
-                </Button>
-              ) : (
-                ""
-              )}
 
+              <Button
+                color="inherit"
+                sx={
+                  Object.assign(
+                    { mr: "1rem", color: "inherit", textTransform: "none" },
+                    HOVER_STYLE("/")
+                  )
+                }
+                component={RouterLink}
+                // startIcon={<HomeIcon />}
+                to="/"
+              >
+                Home
+              </Button>
+
+              <Button
+                color="inherit"
+                sx={
+                  Object.assign(
+                    {
+                      mr: "1rem",
+                      color: "inherit",
+                      textTransform: "none",
+                      position: "relative",
+                    },
+                    HOVER_STYLE("/about-us")
+                  )
+
+                }
+                component={RouterLink}
+                // startIcon={<PeopleAltIcon />}
+                to="/about-us"
+              >
+                About us
+              </Button>
               {account ? (
                 <Button
                   color="inherit"
@@ -197,11 +258,27 @@ const Header = () => {
                   startIcon={<AccountBalanceWalletIcon />}
                   onClick={handleConnect}
                   color="inherit"
-                  sx={{ textTransform: "none" }}
+                  sx={{ 
+                    textTransform: "none",
+                    ":hover": {
+                      ":after": {
+                        content: '""',
+                        width: "40px",
+                        height: "3px",
+                        position: "absolute",
+                        bottom: 0,
+                        left: "50%",
+                        backgroundColor: "#fff",
+                        borderRadius: "20px",
+                        transform: `translate(-${50}%, ${0}rem)`
+                      }
+                    }
+                 }}
                 >
                   Connect
                 </Button>
               )}
+
               {location.pathname !== `/search/${term}` ? (
                 <>
                   <div className="container-2" style={{ marginLeft: "1rem" }}>
@@ -266,9 +343,8 @@ const Header = () => {
                 onClose={handleCloseNavMenu}
                 sx={{
                   display: { xs: "block", md: "none" },
-                  transform: `translate(${
-                    anchorElNav ? "0px , 0px" : "100vw, 0"
-                  })`,
+                  transform: `translate(${anchorElNav ? "0px , 0px" : "100vw, 0"
+                    })`,
                   transition: "transition 0.4s",
                 }}
               >

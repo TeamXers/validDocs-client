@@ -11,6 +11,7 @@ import Logo from "../assets/Black_and_White_Logo_Symbol_only_Transparent.png";
 import SearchIcon from "@mui/icons-material/Search";
 import IpfsLogo from "../assets/ipfs.svg";
 import HarmonyLogo from "../assets/harmony.svg";
+import MailchimpSubscribe from "react-mailchimp-subscribe"
 import { Link as RouterLink, useNavigate, useLocation, useParams } from "react-router-dom";
 import { IField } from "./forms/Fields";
 import { Form } from "./forms/Form"
@@ -33,6 +34,7 @@ initialValue:"",
 customErrorStyle:{position:"absolute", bottom:"-2rem", left:0 }
 }
 ]
+const URL = "https://us7.api.mailchimp.com/3.0/lists/e6558959a4/members"
 
 const Footer = () => {
   const {term} = useParams()
@@ -230,21 +232,32 @@ const Footer = () => {
                     alignItems: {xs:"flex-start", lg:"center"},
                   }}
                 >
-                  <Form fields={FIELDS} onSubmit={()=>{}} className="suscribe-email" >
-                    <Button
-                      variant="contained"
-                      sx={{
-                        margin: { xs: "1rem 0 0 0", lg: "0 0 0 1rem" },
-                        backgroundColor: "rgb(0, 191, 173)",
-                        borderRadius: "10px",
-                        padding: ".7rem 2rem",
-                      }}
-                      type="submit"
-                    >
-                      SUBMIT
-                    </Button>
-                  </Form>
-         
+                  <MailchimpSubscribe
+                    url={URL}
+                    render={({ subscribe, status, message }) => (
+                      <div>
+                        <Form fields={FIELDS} onSubmit={(values:any) => {subscribe(values) }} className="suscribe-email" >
+                          <Button
+                            variant="contained"
+                            sx={{
+                              margin: { xs: "1rem 0 0 0", lg: "0 0 0 1rem" },
+                              backgroundColor: "rgb(0, 191, 173)",
+                              borderRadius: "10px",
+                              padding: ".7rem 2rem",
+                            }}
+                            type="submit"
+                          >
+                            SUBMIT
+                          </Button>
+                        </Form>
+                        {status === "sending" && <div style={{ color: "blue" }}>sending...</div>}
+                         {/* // @ts-ignore */}
+                        {status === "error" && <div style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: message }} />}
+                        {status === "success" && <div style={{ color: "green" }}>Subscribed !</div>}
+                      </div>
+                    )}
+                  />
+               
                
                 </Box>
               </Box>
