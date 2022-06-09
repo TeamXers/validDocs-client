@@ -20,24 +20,24 @@ import * as yup from "yup";
 
 
 
-const FIELDS : IField[] = [
+const FIELDS: IField[] = [
   {
-name:"email",
-initialValue:"",
-    placeholder:"Your email",
-  validator: yup.string().email("Please enter a valid email").required("Please enter your email address"),
+    name: "email",
+    initialValue: "",
+    placeholder: "Your email",
+    validator: yup.string().email("Please enter a valid email").required("Please enter your email address"),
     customStyle: {
       width: { xs: "100%", md: "250px" },
       backgroundColor: "#fff",
       borderRadius: "10px",
-},
-customErrorStyle:{position:"absolute", bottom:"-2rem", left:0 }
-}
+    },
+    customErrorStyle: { position: "absolute", bottom: "-2rem", left: 0 }
+  }
 ]
-const URL = "https://us7.api.mailchimp.com/3.0/lists/e6558959a4/members"
+const URL = "https://gmail.us7.list-manage.com/subscribe/post?u=94e7855ce8d9e8eeea7b749d7&amp;id=e6558959a4"
 
 const Footer = () => {
-  const {term} = useParams()
+  const { term } = useParams()
   const location = useLocation()
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -48,44 +48,44 @@ const Footer = () => {
   return (
     <>
       <footer>
-       {
-        location.pathname === "/" || location.pathname === "/about-us" || location.pathname === `/search/${term}`  ? ( <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: "center",
-            backgroundColor: "rgb(0, 150, 136, 0.7)",
-            margin: "2rem 0 0 0",
-            padding: "2rem",
-          }}
-        >
-          <Box
-            component={"img"}
-            src={HarmonyLogo}
-            alt="harmony logo"
+        {
+          location.pathname === "/" || location.pathname === "/about-us" || location.pathname === `/search/${term}` ? (<Box
             sx={{
               display: "flex",
-              width: "150px",
-              margin: { xs: "2rem auto", md: "0 4rem" },
-              opacity: "0.7",
-              ":hover": { opacity: "1" },
+              flexDirection: { xs: "column", md: "row" },
+              justifyContent: "center",
+              backgroundColor: "rgb(0, 150, 136, 0.7)",
+              margin: "2rem 0 0 0",
+              padding: "2rem",
             }}
-          />
-          <Box
-            component={"img"}
-            src={IpfsLogo}
-            alt="ipfs logo"
-            sx={{
-              display: "flex",
-              width: "150px",
-              opacity: "0.7",
-              margin: { xs: "0 auto", md: "0 4rem" },
-              ":hover": { opacity: "1" },
-            }}
-          />
-        </Box>)
-      : ""  
-      }
+          >
+            <Box
+              component={"img"}
+              src={HarmonyLogo}
+              alt="harmony logo"
+              sx={{
+                display: "flex",
+                width: "150px",
+                margin: { xs: "2rem auto", md: "0 4rem" },
+                opacity: "0.7",
+                ":hover": { opacity: "1" },
+              }}
+            />
+            <Box
+              component={"img"}
+              src={IpfsLogo}
+              alt="ipfs logo"
+              sx={{
+                display: "flex",
+                width: "150px",
+                opacity: "0.7",
+                margin: { xs: "0 auto", md: "0 4rem" },
+                ":hover": { opacity: "1" },
+              }}
+            />
+          </Box>)
+            : ""
+        }
         <Box sx={{ padding: "1rem", margin: "0", backgroundColor: "#009688" }}>
           <Container>
             <Box
@@ -105,7 +105,7 @@ const Footer = () => {
                 sx={{
                   width: "100%",
                   color: "#fff",
-                  textAlign:"left",
+                  textAlign: "left",
                   justifyContent: "flex-start",
                 }}
               >
@@ -229,14 +229,14 @@ const Footer = () => {
                     display: "flex",
                     flexDirection: { xs: "column", md: "row" },
                     margin: "1.5rem 0",
-                    alignItems: {xs:"flex-start", lg:"center"},
+                    alignItems: { xs: "flex-start", lg: "center" },
                   }}
                 >
                   <MailchimpSubscribe
                     url={URL}
                     render={({ subscribe, status, message }) => (
                       <div>
-                        <Form fields={FIELDS} onSubmit={(values:any) => {subscribe(values) }} className="suscribe-email" >
+                        <Form fields={FIELDS} onSubmit={(values: any) => { subscribe(values) }} className="suscribe-email" >
                           <Button
                             variant="contained"
                             sx={{
@@ -251,14 +251,14 @@ const Footer = () => {
                           </Button>
                         </Form>
                         {status === "sending" && <div style={{ color: "blue" }}>sending...</div>}
-                         {/* // @ts-ignore */}
-                        {status === "error" && <div style={{ color: "red" }} dangerouslySetInnerHTML={{ __html: message }} />}
+   
+                        {status === "error" && <div style={{ color: "red" }}  >{message}</div>}
                         {status === "success" && <div style={{ color: "green" }}>Subscribed !</div>}
                       </div>
                     )}
                   />
-               
-               
+
+
                 </Box>
               </Box>
             </Box>

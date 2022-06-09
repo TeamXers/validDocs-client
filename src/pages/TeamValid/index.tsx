@@ -207,121 +207,6 @@ const TeamValid = () => {
                                 }
                             >
                                 <Box
-                                    component="img"
-                                    sx={
-                                        {
-                                            borderRadius: "20px",
-                                            width: "90%",
-                                            maxWidth: "90%"
-                                        }
-                                    }
-                                    src={JeffPic}
-                                    alt="Ango Jeffrey"
-                                />
-                                <Typography
-                                    variant={"h6"}
-                                    sx={{
-                                        color: "#252525",
-                                        margin: "1rem 0",
-                                        fontWeight: "600",
-                                    }}
-                                >
-                                    Ango Jeffrey
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        color: "#707070",
-                                        fontWeight: "300",
-                                    }}
-                                >
-                                    Frontend Engineer
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        width: "90%",
-                                        mt: "1rem"
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            mx: "0.25rem",
-                                            color: "#252525",
-                                            ":hover": {
-                                                color: "#009688"
-                                            }
-                                        }}
-                                    >
-                                        <Button
-                                            component="a"
-                                            href=""
-                                            color="inherit"
-                                            sx={{
-                                                width: "fit-content",
-                                                minWidth: "auto"
-                                            }}
-                                        >
-                                            <LinkedInIcon />
-                                        </Button>
-
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            mx: "0.25rem",
-                                            color: "#252525",
-                                            ":hover": {
-                                                color: "#009688"
-                                            }
-                                        }}
-                                    >
-                                        <Button
-                                            component="a"
-                                            href=""
-                                            color="inherit"
-                                            sx={{
-                                                width: "fit-content",
-                                                minWidth: "auto"
-                                            }}
-                                        >
-                                            <GitHubIcon />
-                                        </Button>
-
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            mx: "0.25rem",
-                                            color: "#252525",
-                                            ":hover": {
-                                                color: "#009688"
-                                            }
-                                        }}
-                                    >
-                                        <Button
-                                            component="a"
-                                            href=""
-                                            color="inherit"
-                                            sx={{
-                                                width: "fit-content",
-                                                minWidth: "auto"
-                                            }}
-                                        >
-                                            <TwitterIcon />
-                                        </Button>
-
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box
-                                sx={
-                                    {
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center"
-                                    }
-                                }
-                            >
-                                <Box
                                     sx={{
                                         borderRadius: "20px",
                                         width: "90%",
@@ -439,6 +324,122 @@ const TeamValid = () => {
                                     </Box>
                                 </Box>
                             </Box>
+                            <Box
+                                sx={
+                                    {
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center"
+                                    }
+                                }
+                            >
+                                <Box
+                                    component="img"
+                                    sx={
+                                        {
+                                            borderRadius: "20px",
+                                            width: "90%",
+                                            maxWidth: "90%"
+                                        }
+                                    }
+                                    src={JeffPic}
+                                    alt="Ango Jeffrey"
+                                />
+                                <Typography
+                                    variant={"h6"}
+                                    sx={{
+                                        color: "#252525",
+                                        margin: "1rem 0",
+                                        fontWeight: "600",
+                                    }}
+                                >
+                                    Ango Jeffrey
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        color: "#707070",
+                                        fontWeight: "300",
+                                    }}
+                                >
+                                    Frontend Engineer
+                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        width: "90%",
+                                        mt: "1rem"
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            mx: "0.25rem",
+                                            color: "#252525",
+                                            ":hover": {
+                                                color: "#009688"
+                                            }
+                                        }}
+                                    >
+                                        <Button
+                                            component="a"
+                                            href=""
+                                            color="inherit"
+                                            sx={{
+                                                width: "fit-content",
+                                                minWidth: "auto"
+                                            }}
+                                        >
+                                            <LinkedInIcon />
+                                        </Button>
+
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            mx: "0.25rem",
+                                            color: "#252525",
+                                            ":hover": {
+                                                color: "#009688"
+                                            }
+                                        }}
+                                    >
+                                        <Button
+                                            component="a"
+                                            href=""
+                                            color="inherit"
+                                            sx={{
+                                                width: "fit-content",
+                                                minWidth: "auto"
+                                            }}
+                                        >
+                                            <GitHubIcon />
+                                        </Button>
+
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            mx: "0.25rem",
+                                            color: "#252525",
+                                            ":hover": {
+                                                color: "#009688"
+                                            }
+                                        }}
+                                    >
+                                        <Button
+                                            component="a"
+                                            href=""
+                                            color="inherit"
+                                            sx={{
+                                                width: "fit-content",
+                                                minWidth: "auto"
+                                            }}
+                                        >
+                                            <TwitterIcon />
+                                        </Button>
+
+                                    </Box>
+                                </Box>
+                            </Box>
+                         
                             {/* <Box
                                 sx={
                                     {
