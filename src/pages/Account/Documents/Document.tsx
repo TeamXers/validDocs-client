@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement} from "react";
 import {
     Box,
     Button,
@@ -8,6 +8,7 @@ import {
     Skeleton,
     IconButton,
     Paper,
+
 } from "@mui/material";
 import { OpenInNew, ContentCopy, MoreVert } from "@mui/icons-material";
 import { useTransition, animated, TransitionFn } from "react-spring";
@@ -24,6 +25,8 @@ import { AddSigner, Signers } from "./Signers";
 import { AddViewer, Viewers } from "./Viewers";
 import { PrivacyStatusDialog } from "./PrivacyStatusDialog";
 import { User } from "../../../components/accounts/UserHero";
+import FeedbackModal from "../../../components/FeedbackModal"
+
 
 interface ViewDocumentProps {
     breadcrumbs: ReactElement<any, any>;
@@ -33,7 +36,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
     const { tokenId } = useParams();
     const { enqueueSnackbar } = useSnackbar();
     const { fileUrl } = useGetFileToken(tokenId);
-
+  
     const { data, error, isFetching, refetch } = useQuery(
         ["document", tokenId],
         GET_DOCUMENT,
@@ -269,7 +272,8 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                     </Box>
                 </Box>
             </Container>
-
+         
+          <FeedbackModal />
             <Footer />
         </Box>
     );
