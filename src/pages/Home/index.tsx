@@ -31,32 +31,18 @@ import DocumentHistoryIllustration from "../../assets/document_history.svg"
 import FileTransferIllustration from "../../assets/transfer_files.svg"
 import FileImage from "../../assets/undraw_my_files_swob.svg";
 import { useEthers } from "@usedapp/core";
-import { Testnet } from "../../ChainConfig";
-import { utils, providers, getDefaultProvider } from "ethers";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { useAppState } from "../../context/Provider";
+
 
 const Home = () => {
-  const [activateError, setActivateError] = useState("");
   const [term, setTerm] = useState("");
   const navigate = useNavigate();
-  const { state } = useAppState();
   const {
     activateBrowserWallet,
     account,
-    chainId,
-    library,
-    switchNetwork,
-    active,
+   
   } = useEthers();
-  // useEffect(() => {
-
-  //     if (error) {
-  //         setActivateError(error.message)
-  //         console.log(activateError)
-  //     }
-  // }, [error, activateError])
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTerm(e.target.value);
   };
@@ -65,47 +51,10 @@ const Home = () => {
   };
 
   const handleConnect = async () => {
-    setActivateError("");
     await activateBrowserWallet();
     navigate("/account/documents");
   };
-  const handleSwitch = async () => {
-    if (account) {
-      if (Testnet.chainId !== chainId) {
-        try {
-          await switchNetwork(Testnet.chainId);
-          await activateBrowserWallet();
-        } catch (e: any) {
-          if (e.code === 4902) {
-            try {
-              await library?.send("wallet_addEthereumChain", [
-                {
-                  chainId: utils.hexlify(1666700000),
-                  chainName: "Harmony Testnet Shard 0",
-                  nativeCurrency: {
-                    name: "Harmony Testnet",
-                    symbol: "ONE",
-                    decimals: 18,
-                  },
-                  rpcUrls: ["https://api.s0.b.hmny.io"],
-                  blockExplorerUrls: ["https://explorer.pops.one/"],
-                },
-              ]);
-            } catch (e: any) {
-              console.log(e.message);
-            }
-          }
-          else if (e.code === 1013) {
-            console.log("qwertyuiop")
-          }
-        }
-        navigate("/account/documents");
-      }
-    }
-  };
-  useEffect(() => {
-    handleSwitch();
-  }, [account]);
+ 
   return (
     <>
       <Helmet>

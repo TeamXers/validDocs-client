@@ -65,7 +65,7 @@ const FeedbackModal = () => {
                                 <Box>
                                     <CheckCircleIcon color="primary" sx={{ fontSize: 70, mb:"1rem" }} />
                                 </Box>
-                                <Typography variant="h6">Your Document was successfully uploaded</Typography>
+                                <Typography variant="h6" sx={{textAlign:"center"}}>Your Document was successfully uploaded</Typography>
                                 <Button sx={{ mt: "2rem", textTransform:"none"}} onClick={() => setToggleFeedback(true)}>
                                     provide feedback?
                                 </Button>
