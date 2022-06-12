@@ -79,30 +79,44 @@ const Header = () => {
       if (Testnet.chainId !== chainId) {
         try {
           await switchNetwork(Testnet.chainId);
+          await library?.send("wallet_addEthereumChain", [
+            {
+              chainId: utils.hexlify(Testnet.chainId),
+              chainName: "Harmony Testnet Shard 0",
+              nativeCurrency: {
+                name: "Harmony Testnet",
+                symbol: "ONE",
+                decimals: 18,
+              },
+              rpcUrls: ["https://api.s0.b.hmny.io"],
+              blockExplorerUrls: ["https://explorer.pops.one/"],
+            },
+          ]);
           // await activateBrowserWallet();
         } catch (e: any) {
-          if (e.code === 4902) {
-            try {
-              await library?.send("wallet_addEthereumChain", [
-                {
-                  chainId: utils.hexlify(1666700000),
-                  chainName: "Harmony Testnet Shard 0",
-                  nativeCurrency: {
-                    name: "Harmony Testnet",
-                    symbol: "ONE",
-                    decimals: 18,
-                  },
-                  rpcUrls: ["https://api.s0.b.hmny.io"],
-                  blockExplorerUrls: ["https://explorer.pops.one/"],
-                },
-              ]);
-            } catch (e: any) {
-              console.log(e.message);
-            }
-          }
-          else if (e.code === 1013) {
-            console.log("qwertyuiop")
-          }
+          console.log(e.message);
+          // if (e.code === 4902 ) {
+          //   try {
+          //     await library?.send("wallet_addEthereumChain", [
+          //       {
+          //         chainId: utils.hexlify(Testnet.chainId),
+          //         chainName: "Harmony Testnet Shard 0",
+          //         nativeCurrency: {
+          //           name: "Harmony Testnet",
+          //           symbol: "ONE",
+          //           decimals: 18,
+          //         },
+          //         rpcUrls: ["https://api.s0.b.hmny.io"],
+          //         blockExplorerUrls: ["https://explorer.pops.one/"],
+          //       },
+          //     ]);
+          //   } catch (e: any) {
+          //     console.log(e.message);
+          //   }
+          // }
+          // else if (e.code === 1013) {
+          //   console.log("qwertyuiop")
+          // }
         }
         // navigate("/account/documents");
       }
