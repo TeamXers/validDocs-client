@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   AppBar,
   Box,
@@ -16,8 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Logo from "../assets/Black_and_White_Logo_Symbol_only_Transparent.png";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useSnackbar } from "notistack";
 import { useEthers } from "@usedapp/core";
 import {
@@ -29,6 +27,11 @@ import {
 import { useAppState } from "../context/Provider";
 import { utils } from "ethers";
 import { Testnet } from "../ChainConfig";
+
+
+// const USER_ADDRESS: any = localStorage.getItem("VDocs_STATE")
+//  (window as any).ethereum.selectedAddress
+
 
 const Header = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -42,7 +45,6 @@ const Header = () => {
   const {
     activateBrowserWallet,
     account,
-    active,
     deactivate,
     error,
     library,
@@ -60,15 +62,10 @@ const Header = () => {
 
   useEffect(() => {
     if (error) {
-      if (error.message.includes(`"code": 1013`)) {
-        console.log("dfghjmk,l.kjmhg")
-        console.log(error.message)
-
-      }
-      else {
+    
         enqueueSnackbar(error.message, { variant: "error" });
-        console.log("ut2", error);
-      }
+        // console.log("ut2", error);
+      
     }
   }, [error]);
 
@@ -77,14 +74,13 @@ const Header = () => {
     await activateBrowserWallet();
     navigate("/account/documents");
   };
-  const handleSwitch = async () => {
+  const handleSwitch = useCallback(async () => {
     if (account) {
       if (Testnet.chainId !== chainId) {
         try {
           await switchNetwork(Testnet.chainId);
-          await activateBrowserWallet();
+          // await activateBrowserWallet();
         } catch (e: any) {
-
           if (e.code === 4902) {
             try {
               await library?.send("wallet_addEthereumChain", [
@@ -108,27 +104,14 @@ const Header = () => {
             console.log("qwertyuiop")
           }
         }
-        navigate("/account/documents");
+        // navigate("/account/documents");
       }
     }
-  };
+  }, [account, chainId])
+
   useEffect(() => {
     handleSwitch();
-  }, [account]);
-
-  useEffect(() => {
-    if (!updateState || active) return;
-    if (!state.walletConnected) return;
-
-    updateState({ walletConnected: false, walletAddress: undefined });
-  }, [active, state, updateState]);
-
-  useEffect(() => {
-    if (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
-    }
-  }, [error]);
-
+  }, [handleSwitch]);
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -202,7 +185,7 @@ const Header = () => {
             </Typography>
             <Box
               sx={{
-                display: { xs: "none", sm: "flex" },
+                display: { xs: "none", md: "flex" },
                 justifyContent: "flex-end",
                 alignItems: "center",
                 width: "100%",
@@ -258,7 +241,7 @@ const Header = () => {
                   startIcon={<AccountBalanceWalletIcon />}
                   onClick={handleConnect}
                   color="inherit"
-                  sx={{ 
+                  sx={{
                     textTransform: "none",
                     ":hover": {
                       ":after": {
@@ -273,7 +256,7 @@ const Header = () => {
                         transform: `translate(-${50}%, ${0}rem)`
                       }
                     }
-                 }}
+                  }}
                 >
                   Connect
                 </Button>
@@ -310,7 +293,7 @@ const Header = () => {
             <Box
               sx={{
                 flexGrow: 1,
-                display: { xs: "flex", sm: "none" },
+                display: { xs: "flex", md: "none" },
                 justifyContent: "flex-end",
                 width: "100%",
                 position: "absolute",
@@ -449,6 +432,7 @@ const Header = () => {
           <MenuItem
             onClick={() => {
               deactivate();
+
               if (!updateState) {
                 throw new Error("updateState is undefined!");
               }

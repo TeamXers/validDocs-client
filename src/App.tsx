@@ -37,6 +37,7 @@ const config: Config = {
     [Testnet.chainId]: "https://api.s0.b.hmny.io",
   },
   networks: [...DEFAULT_SUPPORTED_CHAINS, Testnet],
+  noMetamaskDeactivate: true
 };
 
 const queryClient = new QueryClient();

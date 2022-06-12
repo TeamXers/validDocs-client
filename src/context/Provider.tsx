@@ -10,7 +10,7 @@ export const StateProvider: React.FC = ({ children }) => {
     [setState]
   );
 
-  return (
+  return ( 
     <AppContext.Provider value={{ state, updateState }}>
       {children}
     </AppContext.Provider>
