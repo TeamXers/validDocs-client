@@ -22,12 +22,16 @@ const FIELDS: IField[] = [
 ];
 
 export const SlidingAccountForm: React.FC<SlidingAccountFormProps> = ({ open, onClose }) => {
-    const { state } = useAppState();
+    const { state, updateState } = useAppState();
     const { enqueueSnackbar } = useSnackbar();
     const { mutate, isLoading } = useMutation(SET_USERNAME, {
-        onSuccess: () => {
+        onSuccess: (_data, account) => {
             enqueueSnackbar("Display name updated successfully", { variant: 'success' });
             onClose();
+
+            if (!updateState)
+                return;
+            updateState({ account });
         },
         onError: () => {
             enqueueSnackbar("An error occurred", { variant: 'error' });

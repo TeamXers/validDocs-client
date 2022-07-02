@@ -16,6 +16,7 @@ import { Documents } from "../../../components/documents/Documents";
 import { TabPanel } from "../../../components/TabPanel";
 import { SharedDocuments } from "./SharedDocuments";
 import { YourDocuments } from "./YourDocuments";
+import { RecentlyViewedDocuments } from "./RecentlyViewedDocuments";
 
 function a11yProps(index: number) {
   return {
@@ -57,19 +58,23 @@ export const AllDocuments = () => {
         <Box sx={{ width: '100%', mt: 4 }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={tab} onChange={handleChangeTab} aria-label="all documents">
-              <Tab label="Yours" {...a11yProps(0)} />
-              <Tab label="Shared" {...a11yProps(1)} />
-              <Tab label="Signed" {...a11yProps(2)} />
+            <Tab label="Recently Viewed" {...a11yProps(0)} />
+              <Tab label="Yours" {...a11yProps(1)} />
+              <Tab label="Shared" {...a11yProps(2)} />
+              <Tab label="Signed" {...a11yProps(3)} />
             </Tabs>
           </Box>
 
           <TabPanel value={tab} index={0}>
-            <YourDocuments />
+            <RecentlyViewedDocuments />
           </TabPanel>
           <TabPanel value={tab} index={1}>
-            <SharedDocuments />
+            <YourDocuments />
           </TabPanel>
           <TabPanel value={tab} index={2}>
+            <SharedDocuments />
+          </TabPanel>
+          <TabPanel value={tab} index={3}>
             <Documents isLoading={true} documents={[]} />
           </TabPanel>
         </Box>

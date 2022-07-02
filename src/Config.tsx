@@ -1,6 +1,7 @@
 import { useEthers } from "@usedapp/core";
 import { useEffect } from "react";
 import { validDocsApi } from "./api/validdocs";
+import { HTTP_UNAUTHORISED } from "./constants";
 import { useAppState } from "./context/Provider";
 import { useAuth } from "./hooks/useAuth"
 import { useHydrateState } from "./hooks/useHydrateState";
@@ -8,17 +9,14 @@ import { useInitAccount } from "./hooks/useInitAccount";
 
 export const AppConfig: React.FC = ({ children }) => {
     const { state, updateState } = useAppState();
-    const authenticate = useAuth();
+    const { authenticate, authenticating } = useAuth(async (token) => {
+        validDocsApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const account = await initAccount();
+        (updateState!)({ authToken: token, account, ready: true });
+    });
     const { hydrate, hydrated } = useHydrateState(state);
     const { account } = useEthers();
-    useInitAccount();
-
-    useEffect(() => {
-        if (hydrated) return;
-        const saved = hydrate();
-        if (saved && updateState)
-            updateState({ authToken: saved.authToken });
-    }, [updateState, hydrated]);
+    const initAccount = useInitAccount();
 
     useEffect(() => {
         if (!updateState) return;
@@ -30,16 +28,34 @@ export const AppConfig: React.FC = ({ children }) => {
     }, [account, updateState]);
 
     useEffect(() => {
-        if (state.authToken || !state.ready) return;
         if (!state.walletConnected) return;
-        authenticate();
-    }, [authenticate, state.walletConnected, state.authToken, state.ready]);
+        if (!updateState) return;
+        if (hydrated) return;
 
-    useEffect(() => {
-        validDocsApi.defaults.headers.common["Authorization"] = state.authToken
-            ? `Bearer ${state.authToken}`
-            : "";
-    }, [state.authToken]);
+        const saved = hydrate();
+
+        (async () => {
+            let token = saved?.authToken;
+            if (!token) {
+                token = await authenticate();
+            } else {
+                try {
+                    validDocsApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+                    const account = await initAccount();
+                    updateState({
+                        account,
+                        authToken: token,
+                        ready: true
+                    });
+                } catch (error: any) {
+                    console.log(error.response?.status);
+                    if (error.response?.status === HTTP_UNAUTHORISED)
+                        await authenticate();
+                }
+            }
+        })();
+    }, [updateState, state.walletConnected]);
 
     return <>{children}</>
 }

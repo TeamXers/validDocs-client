@@ -1,23 +1,18 @@
 import { useSnackbar } from "notistack";
-import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { GET_DOCUMENTS } from "../../../api/validdocs";
+import { GET_RECENTLY_VIEWED_DOCUMENTS } from "../../../api/validdocs";
 import { Documents } from "../../../components/documents/Documents";
 import { useAppState } from "../../../context/Provider";
 
-export const YourDocuments = () => {
+export const RecentlyViewedDocuments = () => {
     const { enqueueSnackbar } = useSnackbar();
     const { state } = useAppState();
-    const query = useMemo(
-        () => ({ authorAddress: state.account?.address }),
-        [state.walletAddress, state.authToken]
-    );
     const { data, isFetching } = useQuery(
-        ["Docs", query],
-        GET_DOCUMENTS as any,
+        ["Docs", "recently-viewed", state.authToken],
+        GET_RECENTLY_VIEWED_DOCUMENTS as any,
         {
             initialData: [] as any[],
-            enabled: Boolean(state.walletAddress),
+            enabled: Boolean(state.authToken),
             retry: 3,
             onError: (error: any) => {
                 enqueueSnackbar(error.message, { variant: "error" });

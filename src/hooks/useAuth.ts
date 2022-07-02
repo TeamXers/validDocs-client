@@ -2,18 +2,13 @@ import { useEthers } from "@usedapp/core";
 import { useCallback, useState } from "react";
 import { useMutation } from "react-query"
 import { POST_AUTH } from "../api/validdocs";
-import { useAppState } from "../context/Provider";
 
-export const useAuth = () => {
-    const { updateState } = useAppState();
+export const useAuth = (onTokenChange: (token: string) => Promise<void>) => {
     const { library } = useEthers();
     const [isLoading, setIsLoading] = useState(false);
-    const { mutate } = useMutation(POST_AUTH, {
-        onSuccess(data: any) {
-            if (!updateState) return;
-            updateState({ authToken: data.token });
-        },
-        onSettled() {
+    const { mutateAsync } = useMutation(POST_AUTH, {
+        async onSettled(data: any) {
+            await onTokenChange(data.token)
             setIsLoading(false);
         }
     });
@@ -33,8 +28,9 @@ export const useAuth = () => {
         const msgStr = JSON.stringify(message);
         const signature = await library.getSigner().signMessage(msgStr);
 
-        mutate({ signature, message: msgStr });
-    }, [mutate, library, isLoading]);
+        const data: any = await mutateAsync({ signature, message: msgStr });
+        return data.token;
+    }, [mutateAsync, library, isLoading]);
 
-    return authenticate;
+    return { authenticating: isLoading, authenticate };
 }

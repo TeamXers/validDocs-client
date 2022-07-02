@@ -1,6 +1,7 @@
 import { Box, Stack, ButtonBase, Paper, Typography, SkeletonProps, Skeleton as MuiSkeleton, styled, BoxProps } from "@mui/material";
 import { useTransition, animated } from "react-spring";
 import { Link as RouterLink } from "react-router-dom";
+import Lock from "@mui/icons-material/Lock";
 import DocumentIcon from "../../assets/document.svg";
 import { formatDate } from "../../utils/date";
 import { useAppState } from "../../context/Provider";
@@ -22,7 +23,7 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
         leave: { opacity: 0, position: "absolute", inset: 0 },
     });
 
-    return <Box position='relative' { ...boxProps }>
+    return <Box position='relative' {...boxProps}>
         {transitions((style: any, loading: any) => (
             <animated.div key={`${loading}`} style={{ ...style, minHeight: 300 }}>
                 <Stack
@@ -41,8 +42,8 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
                                         component={RouterLink}
                                         to={
                                             doc.authorAddress === state.walletAddress
-                                            ? `/account/documents/${doc.tokenId}`
-                                            : `/documents/${doc.tokenId}`
+                                                ? `/account/documents/${doc.tokenId}`
+                                                : `/documents/${doc.tokenId}`
                                         }
                                         sx={{
                                             my: 3,
@@ -71,12 +72,21 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
                                                     alt={doc.name}
                                                 />
                                             </Stack>
-                                            <Typography
-                                                sx={{ mx: 1, mt: 2 }}
-                                                overflow="ellipsis"
-                                            >
-                                                {doc.name}
-                                            </Typography>
+
+                                            <Stack
+                                                direction={'row'}
+                                                justifyContent={'space-between'}
+                                                sx={{ mx: 1, mt: 2 }}>
+                                                <Typography
+                                                    sx={{ mr: 1, maxWidth: '150px' }}
+                                                    overflow="ellipsis"
+                                                >
+                                                    {doc.name}
+                                                </Typography>
+
+                                                {!doc.isPublic && <Lock fontSize='small' htmlColor="#5f5f5f" />}
+                                            </Stack>
+
                                             <Typography sx={{ mx: 1 }} variant="body2">
                                                 Created on {formatDate(doc.createdAt)}
                                             </Typography>
