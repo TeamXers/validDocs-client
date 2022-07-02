@@ -3,11 +3,12 @@ import { useCallback, useState } from "react";
 import { useMutation } from "react-query"
 import { POST_AUTH } from "../api/validdocs";
 
-export const useAuth = () => {
+export const useAuth = (onTokenChange: (token: string) => Promise<void>) => {
     const { library } = useEthers();
     const [isLoading, setIsLoading] = useState(false);
     const { mutateAsync } = useMutation(POST_AUTH, {
-        onSettled() {
+        async onSettled(data: any) {
+            await onTokenChange(data.token)
             setIsLoading(false);
         }
     });
@@ -31,5 +32,5 @@ export const useAuth = () => {
         return data.token;
     }, [mutateAsync, library, isLoading]);
 
-    return authenticate;
+    return { authenticating: isLoading, authenticate };
 }
