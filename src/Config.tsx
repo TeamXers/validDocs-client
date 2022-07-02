@@ -49,7 +49,6 @@ export const AppConfig: React.FC = ({ children }) => {
                         ready: true
                     });
                 } catch (error: any) {
-                    console.log(error.response?.status);
                     if (error.response?.status === HTTP_UNAUTHORISED)
                         await authenticate();
                 }
