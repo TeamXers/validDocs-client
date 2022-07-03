@@ -16,7 +16,7 @@ import { ViewDocument } from "./pages/Account/Documents/Document";
 import { CurrentUserProfile, Profile } from "./pages/Account/Profile";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import About  from "./pages/About"
+import About from "./pages/About"
 import { AppBreadcrumbs } from "./components/Breadcrumbs";
 import { StateProvider } from "./context/Provider";
 import { theme } from "./theme";
@@ -49,12 +49,12 @@ function AppRoutes() {
         <SnackbarParent maxSnack={3}>
           <StateProvider>
             <BrowserRouter>
-            <ScrollToTop />
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<App />}>
                   <Route index element={<Home />} />
-<Route path="about-us" element={<About />} />
-<Route path="team_valid" element={<TeamValid />} />
+                  <Route path="about-us" element={<About />} />
+                  <Route path="team_valid" element={<TeamValid />} />
                   <Route path="account" element={<Account />}>
                     <Route index element={<AllDocuments />} />
                     <Route path="profile" element={<CurrentUserProfile />} />
