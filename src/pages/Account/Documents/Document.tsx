@@ -1,4 +1,4 @@
-import { ReactElement} from "react";
+import { ReactElement } from "react";
 import {
     Box,
     Button,
@@ -36,7 +36,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
     const { tokenId } = useParams();
     const { enqueueSnackbar } = useSnackbar();
     const { fileUrl } = useGetFileToken(tokenId);
-  
+
     const { data, error, isFetching, refetch } = useQuery(
         ["document", tokenId],
         GET_DOCUMENT,
@@ -98,7 +98,7 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
             <Container sx={{ py: 8 }}>
                 <Box mb={2}>{breadcrumbs}</Box>
 
-                <Box display="flex" justifyContent={"space-between"}>
+                <Box display="flex" justifyContent={"space-between"} flexWrap={'wrap'}>
                     <Box sx={{ width: { xs: "100%", md: "60%" } }}>
                         <Box>
                             <Box display="flex" alignItems="center">
@@ -124,22 +124,8 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
 
                             <Typography component="div" variant="h3">
                                 <LoaderOrContent transition={transition}>
-                                    <Box
-                                        display="flex"
-                                        justifyContent={"space-between"}
-                                        alignItems={"center"}
-                                    >
-                                        <Box flexGrow={1}>{document?.name}</Box>
-
-                                        <IconButton
-                                            sx={{
-                                                display: { md: "none" },
-                                                width: "40px",
-                                                height: "40px",
-                                            }}
-                                        >
-                                            <MoreVert />
-                                        </IconButton>
+                                    <Box>
+                                        {document?.name}
                                     </Box>
                                 </LoaderOrContent>
                             </Typography>
@@ -210,7 +196,11 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                         </Box>
                     </Box>
 
-                    <Box sx={{ display: { xs: "none", md: "block" }, width: "35%" }}>
+                    <Box sx={{
+                        width: { xs: '100%', md: '35%' },
+                        maxWidth: '340px',
+                        mt: { xs: 8, md: 0 }
+                    }}>
                         <Box
                             component={Paper}
                             variant="outlined"
@@ -272,8 +262,8 @@ export const ViewDocument: React.FC<ViewDocumentProps> = ({ breadcrumbs }) => {
                     </Box>
                 </Box>
             </Container>
-         
-          <FeedbackModal />
+
+            <FeedbackModal />
             <Footer />
         </Box>
     );
