@@ -41,7 +41,7 @@ export const Documents: React.FC<DocumentsProps & Pick<BoxProps, 'sx'>> = ({ doc
                                         key={index}
                                         component={RouterLink}
                                         to={
-                                            doc.authorAddress === state.walletAddress
+                                            doc.authorAddress === state.walletAddress?.toLowerCase()
                                                 ? `/account/documents/${doc.tokenId}`
                                                 : `/documents/${doc.tokenId}`
                                         }
